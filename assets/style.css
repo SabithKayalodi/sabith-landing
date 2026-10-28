@@ -104,3 +104,4 @@ a.fl:hover{border-color:var(--ink)}
 .related .label{font:700 13px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
 footer{border-top:1px solid var(--line);padding-block:28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:14px}
+.post .cover{display:block;width:100%;max-width:100%;height:auto;border-radius:16px;margin:4px 0 22px;background:var(--amber-soft)}

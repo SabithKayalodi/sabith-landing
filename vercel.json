@@ -1,4 +1,15 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/post/:slug", "destination": "/api/post?slug=:slug" },
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" }
+  ],
+  "redirects": [
+    { "source": "/post", "has": [{ "type": "query", "key": "p", "value": "(?<slug>.+)" }], "destination": "/post/:slug", "permanent": true },
+    { "source": "/post", "destination": "/posts", "permanent": false }
+  ],
+  "headers": [
+    { "source": "/admin", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Cache-Control", "value": "no-store" }] }
+  ]
 }

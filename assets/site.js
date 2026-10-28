@@ -1,15 +1,10 @@
 /* ==========================================================
-   SETUP (one time): paste your Google Sheet CSV links here.
-   After that, add and edit everything in Google Sheets.
-   See README.md, step 2.
+   Content now comes from your Google Sheet through /api/data
+   (edit it at yoursite/admin). Nothing to set here.
    ========================================================== */
-const CONFIG = {
-  RESOURCES_CSV: "",   // "Resources" tab, published as CSV
-  POSTS_CSV:     "",   // "Posts" tab, published as CSV
-  LINKS_CSV:     ""    // "Links" tab, published as CSV
-};
+const DATA_URL = "/api/data";
 
-/* Shown only until the sheet links above are added (or if a sheet can't load) */
+/* Shown only until the Google Sheet is connected (or if it can't load) */
 const FALLBACK = {
   resources: [
     { keyword: "TOOLS", format: "PDF", new: "yes", show: "yes", link: "",
@@ -126,42 +121,21 @@ document.addEventListener("click", e => {
   if (b) setLang(b.dataset.lang);
 });
 
-/* ---------- Google Sheet loading ---------- */
-function parseCSV(text) {
-  const rows = []; let row = [], cell = "", q = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (q) {
-      if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; }
-      else if (c === '"') q = false;
-      else cell += c;
-    } else if (c === '"') q = true;
-    else if (c === ",") { row.push(cell); cell = ""; }
-    else if (c === "\n" || c === "\r") {
-      if (c === "\r" && text[i + 1] === "\n") i++;
-      row.push(cell); rows.push(row); row = []; cell = "";
-    } else cell += c;
-  }
-  if (cell !== "" || row.length) { row.push(cell); rows.push(row); }
-  const head = (rows.shift() || []).map(h => h.trim().toLowerCase());
-  return rows.filter(r => r.some(v => v.trim() !== ""))
-             .map(r => Object.fromEntries(head.map((h, i) => [h, (r[i] || "").trim()])));
-}
-async function fetchSheet(url) {
+/* ---------- loading (instant from cache, then fresh) ---------- */
+async function fetchData() {
   try {
-    const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 5000);
-    const res = await fetch(url, { cache: "no-store", signal: ctl.signal }); clearTimeout(timer);
-    return res.ok ? parseCSV(await res.text()) : null;
+    const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 8000);
+    const res = await fetch(DATA_URL, { signal: ctl.signal }); clearTimeout(timer);
+    if (!res.ok) return null;
+    const d = await res.json();
+    return d && Array.isArray(d.posts) ? d : null;
   } catch (e) { return null; }
 }
-/* Instant: cached copy first, fresh copy when it arrives. null = still loading */
-function useSheet(url, key, fallback, done) {
-  if (!safeUrl(url)) { done(fallback); return; }
-  const cached = store.get(key);
-  done(cached && cached.length ? cached : null);
-  fetchSheet(url).then(rows => {
-    if (rows && rows.length) { store.set(key, rows); done(rows); }
-    else if (!(cached && cached.length)) done(fallback);
+function applySettings(settings) {
+  Object.entries(settings || {}).forEach(([k, v]) => {
+    if (!v || k === "headline") return;
+    if (v.en) STRINGS.en[k] = v.en;
+    if (v.ml) STRINGS.ml[k] = v.ml;
   });
 }
 
@@ -171,7 +145,8 @@ const LINK_KEY = { instagram: "instagram", youtube: "youtube", whatsapp: "whatsa
 const toLinks = rows => Array.isArray(rows)
   ? rows.reduce((m, r) => { const k = LINK_KEY[(r.platform || "").toLowerCase()]; if (k) m[k] = r.link; return m; }, { ...FALLBACK.links })
   : rows;
-const sortedPosts = () => (state.posts || []).filter(visible).slice().sort((a, b) => String(b.date).localeCompare(String(a.date)));
+const sortedPosts = () => (state.posts || []).map((p, i) => [p, i]).filter(([p]) => visible(p))
+  .sort((a, b) => String(b[0].date).localeCompare(String(a[0].date)) || b[1] - a[1]).map(([p]) => p);
 const fmtDate = d => {
   const x = new Date(d + "T00:00:00");
   if (isNaN(x)) return esc(d);
@@ -202,7 +177,7 @@ function renderPosts() {
   const list = sortedPosts();
   const shown = limit ? list.slice(0, limit) : list;
   el.innerHTML = shown.length ? shown.map(p => `
-    <a class="post-row" href="/post?p=${encodeURIComponent(p.slug)}">
+    <a class="post-row" href="/post/${encodeURIComponent(p.slug)}">
       <span class="meta">${fmtDate(p.date)}</span>
       <h3>${esc(pick(p, "title"))}</h3>
       <p>${esc(pick(p, "summary"))}</p>
@@ -242,8 +217,9 @@ function formatBody(text) {
 function renderPost() {
   const el = document.getElementById("post"); if (!el) return;
   if (state.posts === null) { el.innerHTML = `<p class="meta">${esc(t("loading"))}</p>`; return; }
-  const slug = new URLSearchParams(location.search).get("p") || "";
-  const p = sortedPosts().find(x => x.slug === slug);
+  const m = location.pathname.match(/^\/post\/([^/?#]+)/);
+  const slug = decodeURIComponent((m && m[1]) || new URLSearchParams(location.search).get("p") || "").toLowerCase();
+  const p = sortedPosts().find(x => String(x.slug).toLowerCase() === slug);
   if (!p) { el.innerHTML = `<a class="back" href="/">${esc(t("back"))}</a><h1>${esc(t("notFound"))}</h1>`; return; }
   const hasMl = !!(p.body_ml && p.body_ml.trim());
   const other = LANG === "ml" ? "en" : "ml";
@@ -257,6 +233,7 @@ function renderPost() {
     <h1>${esc(pick(p, "title"))}</h1>
     <p class="meta">${fmtDate(p.date)}</p>
     ${LANG === "ml" && !hasMl ? `<p class="note">${esc(t("noMl"))}</p>` : ""}
+    ${safeUrl(p.image) ? `<img class="cover" src="${esc(p.image)}" alt="">` : ""}
     ${reel ? `<div class="actions"><a class="btn btn-amber" href="${esc(reel)}" target="_blank" rel="noopener">${esc(t("watch"))}</a></div>` : ""}
     <div class="body">${formatBody(body)}</div>
     ${res ? `<div class="related"><span class="label">${esc(t("related"))}</span>${resourceCard(res)}</div>` : ""}
@@ -266,7 +243,21 @@ function renderPost() {
 function renderAll() { applyStrings(); renderResources(); renderPosts(); renderLinks(); renderPost(); }
 
 /* ---------- start ---------- */
-renderAll();
-useSheet(CONFIG.RESOURCES_CSV, "sb_resources", FALLBACK.resources, rows => { state.resources = rows; renderResources(); renderPost(); });
-useSheet(CONFIG.POSTS_CSV, "sb_posts", FALLBACK.posts, rows => { state.posts = rows; renderPosts(); renderPost(); });
-useSheet(CONFIG.LINKS_CSV, "sb_links", FALLBACK.links, rows => { state.links = toLinks(rows); renderLinks(); });
+function useData(d) {
+  if (!d) return;
+  applySettings(d.settings);
+  state.resources = d.resources || [];
+  state.posts = d.posts || [];
+  state.links = toLinks(d.links || []);
+  renderAll();
+}
+if (window.__DATA__) {
+  useData(window.__DATA__);              // post pages arrive with their content already inside
+} else {
+  const cached = store.get("sb_data");
+  if (cached) useData(cached); else renderAll();
+  fetchData().then(d => {
+    if (d) { store.set("sb_data", d); useData(d); }
+    else if (!cached) useData(FALLBACK);
+  });
+}

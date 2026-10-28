@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Website admin | Sabith</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+body{background:#F7F7F5;padding-bottom:40px}
+.wrap{max-width:860px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:16px;flex-wrap:wrap}
+.bar h1{font-size:1.5rem;font-weight:800}
+.bar .links{display:flex;gap:10px;flex-wrap:wrap}
+.small-btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 14px;border-radius:999px;border:2px solid var(--ink);background:#fff;color:var(--ink);font:700 14px var(--f-body);text-decoration:none;cursor:pointer}
+.small-btn.dark{background:var(--ink);color:#fff}
+.small-btn.danger{border-color:#B42318;color:#B42318}
+.small-btn.danger.armed{background:#B42318;color:#fff}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{border:0;border-radius:999px;padding:10px 16px;font:700 15px var(--f-body);background:#ECECE8;color:var(--ink);cursor:pointer;min-height:44px}
+.tabs button[aria-selected="true"]{background:var(--navy);color:#fff}
+.list{display:grid;gap:10px}
+.item{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:#fff;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
+.item:hover{border-color:var(--ink)}
+.item b{display:block;font-size:16px}
+.item span.m{font-size:13px;color:var(--muted)}
+.pill{flex:none;font:700 12px var(--f-body);padding:4px 10px;border-radius:999px;background:#E7F5EC;color:#1B6B3A}
+.pill.off{background:#F1F1F1;color:var(--muted)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+label{display:grid;gap:6px;font:600 14px var(--f-body);color:var(--ink)}
+label small{font-weight:400;color:var(--muted)}
+input[type=text],input[type=date],input[type=url],input[type=password],select,textarea{width:100%;border:1.5px solid #D5D5D0;border-radius:10px;padding:11px 12px;font:16px var(--f-body);color:var(--ink);background:#fff}
+textarea{min-height:120px;resize:vertical;line-height:1.6}
+textarea.body{min-height:260px}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--amber);outline-offset:1px;border-color:var(--ink)}
+.check{display:flex;align-items:center;gap:10px;font:600 15px var(--f-body);min-height:44px}
+.check input{width:22px;height:22px;accent-color:var(--navy)}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden;justify-self:start}
+.seg button{border:0;background:#fff;font:700 14px var(--f-body);padding:8px 16px;min-height:40px;cursor:pointer;color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.actionsbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hint{font-size:13px;color:var(--muted);line-height:1.5}
+.preview{border:2px dashed #D5D5D0;border-radius:14px;padding:18px;background:#fff}
+.preview h1{font-size:1.8rem;font-weight:800;margin-bottom:10px}
+.thumb{max-width:220px;border-radius:10px;display:block}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font:600 15px var(--f-body);max-width:calc(100% - 32px);z-index:10;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.toast.err{background:#B42318}
+.login{max-width:420px;margin:12vh auto 0}
+.empty{color:var(--muted);padding:8px 2px}
+#langBox{display:grid;gap:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Login -->
+  <div id="login" class="login panel">
+    <h1 style="font-size:1.6rem;font-weight:800">Website admin</h1>
+    <p class="hint">Enter the password you set in your Google Apps Script.</p>
+    <form id="loginForm" style="display:grid;gap:14px">
+      <label for="pw">Password <input type="password" id="pw" autocomplete="current-password" required></label>
+      <button class="btn btn-navy" type="submit" id="loginBtn">Log in</button>
+    </form>
+    <p class="hint" id="loginMsg" role="status"></p>
+  </div>
+
+  <!-- App -->
+  <div id="app" hidden>
+    <div class="bar">
+      <h1>Website admin</h1>
+      <div class="links">
+        <a class="small-btn" href="/" target="_blank" rel="noopener">View site</a>
+        <button class="small-btn" type="button" id="logout">Log out</button>
+      </div>
+    </div>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="posts" aria-selected="true">Posts</button>
+      <button type="button" role="tab" data-tab="resources" aria-selected="false">Resources</button>
+      <button type="button" role="tab" data-tab="links" aria-selected="false">Links</button>
+      <button type="button" role="tab" data-tab="settings" aria-selected="false">About &amp; text</button>
+    </div>
+    <div id="view"></div>
+  </div>
+</div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+/* ---------- basics ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const safeUrl = u => /^https?:\/\//i.test(String(u || "").trim()) ? String(u).trim() : "";
+const hidden = r => /^(no|n|false|0)$/i.test(String(r.show || "").trim());
+const today = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
+const slugify = s => String(s || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
+let PW = "";
+try { PW = sessionStorage.getItem("sb_admin") || ""; } catch (e) {}
+let DATA = { posts: [], resources: [], links: [], settings: {} };
+let TAB = "posts";
+
+function toast(msg, isErr) {
+  const t = $("#toast"); t.textContent = msg; t.className = "toast" + (isErr ? " err" : ""); t.hidden = false;
+  clearTimeout(toast.timer); toast.timer = setTimeout(() => t.hidden = true, isErr ? 6000 : 3500);
+}
+async function api(payload) {
+  const res = await fetch("/api/admin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...payload, password: PW }) });
+  let j = null; try { j = await res.json(); } catch (e) {}
+  if (!j || !j.ok) throw new Error((j && j.error) || "Something went wrong. Try again.");
+  return j;
+}
+
+/* ---------- login ---------- */
+async function load() {
+  const j = await api({ action: "list" });
+  DATA = j.data;
+  DATA.links = DATA.links || []; DATA.settings = DATA.settings || {};
+}
+$("#loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  PW = $("#pw").value; $("#loginBtn").disabled = true; $("#loginMsg").textContent = "Checking…";
+  try { await load(); try { sessionStorage.setItem("sb_admin", PW); } catch (e) {} showApp(); }
+  catch (err) { $("#loginMsg").textContent = err.message; }
+  finally { $("#loginBtn").disabled = false; }
+});
+$("#logout").addEventListener("click", () => { try { sessionStorage.removeItem("sb_admin"); } catch (e) {} PW = ""; location.reload(); });
+function showApp() { $("#login").hidden = true; $("#app").hidden = false; render(); }
+document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => {
+  TAB = b.dataset.tab;
+  document.querySelectorAll("[data-tab]").forEach(x => x.setAttribute("aria-selected", x === b ? "true" : "false"));
+  render();
+}));
+if (PW) load().then(showApp).catch(() => { PW = ""; });
+
+/* ---------- formatting preview (same rules as the site) ---------- */
+function formatBody(text) {
+  const link = s => s.replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`);
+  return String(text || "").replace(/\r/g, "").split(/\n\s*\n/).map(block => {
+    const lines = block.split("\n").filter(l => l.trim() !== "");
+    let html = "";
+    if (lines[0] && lines[0].startsWith("## ")) html += `<h2>${link(esc(lines.shift().slice(3)))}</h2>`;
+    if (!lines.length) return html;
+    const isB = l => l.trim().startsWith("- "), li = l => `<li>${link(esc(l.trim().slice(2)))}</li>`;
+    if (lines.every(isB)) return html + `<ul>${lines.map(li).join("")}</ul>`;
+    const b = lines.findIndex(isB);
+    if (b > 0 && lines.slice(b).every(isB)) return html + `<p>${lines.slice(0, b).map(l => link(esc(l))).join("<br>")}</p><ul>${lines.slice(b).map(li).join("")}</ul>`;
+    return html + `<p>${lines.map(l => link(esc(l))).join("<br>")}</p>`;
+  }).join("");
+}
+
+/* ---------- views ---------- */
+function render() {
+  if (TAB === "posts") return listPosts();
+  if (TAB === "resources") return listResources();
+  if (TAB === "links") return editLinks();
+  if (TAB === "settings") return editSettings();
+}
+function wireDelete(btn, run) {
+  btn.addEventListener("click", async () => {
+    if (!btn.classList.contains("armed")) { btn.classList.add("armed"); btn.textContent = "Tap again to delete"; setTimeout(() => { btn.classList.remove("armed"); btn.textContent = "Delete"; }, 4000); return; }
+    btn.disabled = true; try { await run(); } catch (e) { toast(e.message, true); btn.disabled = false; }
+  });
+}
+
+/* Posts */
+function listPosts() {
+  const posts = DATA.posts.map((p, i) => [p, i]).sort((a, b) => String(b[0].date).localeCompare(String(a[0].date)) || b[1] - a[1]).map(([p]) => p);
+  $("#view").innerHTML = `<div class="panel">
+    <div class="actionsbar"><button class="btn btn-amber" type="button" id="newPost">+ New post</button></div>
+    <div class="list">${posts.length ? posts.map((p, i) => `
+      <button class="item" type="button" data-i="${i}">
+        <span><b>${esc(p.title_en || p.title_ml || p.slug)}</b><span class="m">${esc(p.date)} · /post/${esc(p.slug)}${p.body_ml ? " · EN + ML" : " · EN only"}</span></span>
+        <span class="pill ${hidden(p) ? "off" : ""}">${hidden(p) ? "Hidden" : "Live"}</span>
+      </button>`).join("") : `<p class="empty">No posts yet.</p>`}</div></div>`;
+  $("#newPost").onclick = () => editPost(null);
+  document.querySelectorAll(".item").forEach(b => b.onclick = () => editPost(posts[+b.dataset.i]));
+}
+function editPost(p) {
+  const isNew = !p; p = p || { date: today(), show: "yes" };
+  let lang = "en", previewOn = false;
+  $("#view").innerHTML = `<form class="panel" id="pf">
+    <div class="actionsbar"><button class="small-btn" type="button" id="back">← All posts</button>${!isNew ? `<a class="small-btn" href="/post/${encodeURIComponent(p.slug)}" target="_blank" rel="noopener">View live</a>` : ""}</div>
+    <h2 style="font-size:1.4rem;font-weight:800">${isNew ? "New post" : "Edit post"}</h2>
+    <div class="seg" role="group" aria-label="Language"><button type="button" data-l="en" aria-pressed="true">English</button><button type="button" data-l="ml" aria-pressed="false">മലയാളം</button></div>
+    <div id="langBox"></div>
+    <div class="row">
+      <label for="f_slug">Page address <small>Letters, numbers, dashes</small><input type="text" id="f_slug" value="${esc(p.slug || "")}" placeholder="whatsapp-auto-reply"></label>
+      <label for="f_date">Date<input type="date" id="f_date" value="${esc(p.date || today())}"></label>
+    </div>
+    <div class="row">
+      <label for="f_reel">Reel link <small>Instagram or YouTube (optional)</small><input type="url" id="f_reel" value="${esc(p.reel || "")}" placeholder="https://"></label>
+      <label for="f_kw">Resource keyword <small>Shows that free resource under the post</small>
+        <select id="f_kw"><option value="">None</option>${DATA.resources.map(r => `<option value="${esc(r.keyword)}" ${String(r.keyword).toLowerCase() === String(p.keyword || "").toLowerCase() ? "selected" : ""}>${esc(r.keyword)} · ${esc(r.title)}</option>`).join("")}</select></label>
+    </div>
+    <label for="f_img">Cover image <small>Optional. Resized automatically before upload.</small><input type="file" id="f_img" accept="image/*"></label>
+    <div id="imgBox">${safeUrl(p.image) ? `<img class="thumb" src="${esc(p.image)}" alt="Cover"> <button class="small-btn" type="button" id="rmImg">Remove image</button>` : ""}</div>
+    <label class="check" for="f_show"><input type="checkbox" id="f_show" ${hidden(p) ? "" : "checked"}> Show on website</label>
+    <div class="actionsbar">
+      <button class="btn btn-navy" type="submit" id="save">Save</button>
+      <button class="small-btn" type="button" id="prev">Preview</button>
+      ${!isNew ? `<button class="small-btn danger" type="button" id="del">Delete</button>` : ""}
+    </div>
+    <div id="previewBox" hidden></div>
+  </form>`;
+  const vals = { title_en: p.title_en || "", title_ml: p.title_ml || "", summary_en: p.summary_en || "", summary_ml: p.summary_ml || "", body_en: p.body_en || "", body_ml: p.body_ml || "" };
+  let image = p.image || "";
+  const slugTouched = { v: !isNew };
+  function syncLang() { ["title", "summary", "body"].forEach(k => { const el = $("#f_" + k); if (el) vals[k + "_" + lang] = el.value; }); }
+  function drawLang() {
+    const ml = lang === "ml";
+    $("#langBox").innerHTML = `
+      <label for="f_title">Title ${ml ? "(Malayalam)" : "(English)"}<input type="text" id="f_title" value="${esc(vals["title_" + lang])}" lang="${lang}"></label>
+      <label for="f_summary">One-line summary <small>Shown in the post list and on Google</small><input type="text" id="f_summary" value="${esc(vals["summary_" + lang])}" lang="${lang}"></label>
+      <label for="f_body">Post text ${ml ? "(Malayalam)" : "(English)"}
+        <small>Empty line = new paragraph · start a line with "- " for a bullet · "## " for a sub-heading · links work automatically${ml ? " · leave empty to hide the Read in Malayalam button" : ""}</small>
+        <textarea class="body" id="f_body" lang="${lang}">${esc(vals["body_" + lang])}</textarea></label>`;
+    $("#f_title").addEventListener("input", e => { if (lang === "en" && !slugTouched.v) $("#f_slug").value = slugify(e.target.value); });
+  }
+  function drawPreview() {
+    syncLang();
+    const box = $("#previewBox");
+    box.hidden = !previewOn; if (!previewOn) return;
+    box.innerHTML = `<div class="preview post"><p class="hint" style="margin-bottom:10px">Preview (${lang === "ml" ? "Malayalam" : "English"})</p>
+      <h1>${esc(vals["title_" + lang])}</h1>${safeUrl(image) ? `<img class="cover" src="${esc(image)}" alt="">` : ""}
+      <div class="body">${formatBody(vals["body_" + lang])}</div></div>`;
+  }
+  drawLang();
+  document.querySelectorAll(".seg button").forEach(b => b.onclick = () => {
+    syncLang(); lang = b.dataset.l;
+    document.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+    drawLang(); drawPreview();
+  });
+  $("#f_slug").addEventListener("input", () => slugTouched.v = true);
+  $("#back").onclick = listPosts;
+  $("#prev").onclick = () => { previewOn = !previewOn; $("#prev").textContent = previewOn ? "Hide preview" : "Preview"; drawPreview(); };
+  const rm = () => { const b = $("#rmImg"); if (b) b.onclick = () => { image = ""; $("#imgBox").innerHTML = ""; }; };
+  rm();
+  $("#f_img").addEventListener("change", async e => {
+    const file = e.target.files[0]; if (!file) return;
+    $("#imgBox").innerHTML = `<p class="hint">Uploading…</p>`;
+    try {
+      const { data, mime } = await shrink(file);
+      const j = await api({ action: "upload", name: file.name, mime, data });
+      image = j.url;
+      $("#imgBox").innerHTML = `<img class="thumb" src="${esc(image)}" alt="Cover"> <button class="small-btn" type="button" id="rmImg">Remove image</button>`; rm();
+      toast("Image uploaded");
+    } catch (err) { $("#imgBox").innerHTML = ""; toast(err.message, true); }
+  });
+  $("#pf").addEventListener("submit", async e => {
+    e.preventDefault(); syncLang();
+    const row = { ...vals, slug: slugify($("#f_slug").value || vals.title_en), date: $("#f_date").value, reel: $("#f_reel").value.trim(),
+      keyword: $("#f_kw").value, image, show: $("#f_show").checked ? "yes" : "no" };
+    if (!row.title_en && !row.title_ml) return toast("Add a title first", true);
+    if (!row.slug) return toast("Add a page address (e.g. my-first-post)", true);
+    if (!row.body_en && !row.body_ml) return toast("Add the post text", true);
+    $("#save").disabled = true; $("#save").textContent = "Saving…";
+    try {
+      await api({ action: "save", type: "posts", row, originalKey: isNew ? "" : p.slug });
+      await load(); toast("Saved. Live on the site within about a minute."); listPosts();
+    } catch (err) { toast(err.message, true); $("#save").disabled = false; $("#save").textContent = "Save"; }
+  });
+  if (!isNew) wireDelete($("#del"), async () => { await api({ action: "delete", type: "posts", key: p.slug }); await load(); toast("Post deleted"); listPosts(); });
+}
+function shrink(file, max = 1600) {
+  return new Promise((resolve, reject) => {
+    const img = new Image(); const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const s = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement("canvas"); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      const d = c.toDataURL("image/jpeg", 0.82);
+      resolve({ data: d.split(",")[1], mime: "image/jpeg" });
+    };
+    img.onerror = () => reject(new Error("Couldn't read that image. Try a JPG or PNG."));
+    img.src = url;
+  });
+}
+
+/* Resources */
+function listResources() {
+  const list = DATA.resources;
+  $("#view").innerHTML = `<div class="panel">
+    <div class="actionsbar"><button class="btn btn-amber" type="button" id="newRes">+ New resource</button></div>
+    <p class="hint">Top of the list shows first on the website.</p>
+    <div class="list">${list.length ? list.map((r, i) => `
+      <button class="item" type="button" data-i="${i}">
+        <span><b>${esc(r.keyword)} · ${esc(r.title)}</b><span class="m">${esc(r.format)}${safeUrl(r.link) ? " · link added" : " · no link yet (shows Coming soon)"}</span></span>
+        <span class="pill ${hidden(r) ? "off" : ""}">${hidden(r) ? "Hidden" : "Live"}</span>
+      </button>`).join("") : `<p class="empty">No resources yet.</p>`}</div></div>`;
+  $("#newRes").onclick = () => editResource(null);
+  document.querySelectorAll(".item").forEach(b => b.onclick = () => editResource(list[+b.dataset.i]));
+}
+function editResource(r) {
+  const isNew = !r; r = r || { format: "PDF", show: "yes", new: "yes" };
+  $("#view").innerHTML = `<form class="panel" id="rf">
+    <div class="actionsbar"><button class="small-btn" type="button" id="back">← All resources</button></div>
+    <h2 style="font-size:1.4rem;font-weight:800">${isNew ? "New resource" : "Edit resource"}</h2>
+    <div class="row">
+      <label for="r_kw">Keyword <small>The word you say in the reel, e.g. TOOLS</small><input type="text" id="r_kw" value="${esc(r.keyword || "")}" required></label>
+      <label for="r_fmt">Format<select id="r_fmt">${["PDF", "Workflow", "Template", "Sheet", "Video", "Guide"].map(f => `<option ${f === r.format ? "selected" : ""}>${f}</option>`).join("")}</select></label>
+    </div>
+    <div class="row">
+      <label for="r_t">Title (English)<input type="text" id="r_t" value="${esc(r.title || "")}" required></label>
+      <label for="r_tm">Title (Malayalam)<input type="text" id="r_tm" lang="ml" value="${esc(r.title_ml || "")}"></label>
+    </div>
+    <label for="r_d">Description (English)<textarea id="r_d">${esc(r.description || "")}</textarea></label>
+    <label for="r_dm">Description (Malayalam)<textarea id="r_dm" lang="ml">${esc(r.description_ml || "")}</textarea></label>
+    <label for="r_l">Download link <small>Google Drive link with "Anyone with the link can view". Empty = Coming soon.</small><input type="url" id="r_l" value="${esc(r.link || "")}" placeholder="https://"></label>
+    <label class="check" for="r_new"><input type="checkbox" id="r_new" ${String(r.new).toLowerCase() === "yes" ? "checked" : ""}> Show "New" label</label>
+    <label class="check" for="r_show"><input type="checkbox" id="r_show" ${hidden(r) ? "" : "checked"}> Show on website</label>
+    <div class="actionsbar"><button class="btn btn-navy" type="submit" id="save">Save</button>${!isNew ? `<button class="small-btn danger" type="button" id="del">Delete</button>` : ""}</div>
+  </form>`;
+  $("#back").onclick = listResources;
+  $("#rf").addEventListener("submit", async e => {
+    e.preventDefault();
+    const row = { keyword: $("#r_kw").value.trim().toUpperCase(), format: $("#r_fmt").value, title: $("#r_t").value.trim(), title_ml: $("#r_tm").value.trim(),
+      description: $("#r_d").value.trim(), description_ml: $("#r_dm").value.trim(), link: $("#r_l").value.trim(),
+      new: $("#r_new").checked ? "yes" : "", show: $("#r_show").checked ? "yes" : "no" };
+    $("#save").disabled = true; $("#save").textContent = "Saving…";
+    try { await api({ action: "save", type: "resources", row, originalKey: isNew ? "" : r.keyword }); await load(); toast("Saved. Live within about a minute."); listResources(); }
+    catch (err) { toast(err.message, true); $("#save").disabled = false; $("#save").textContent = "Save"; }
+  });
+  if (!isNew) wireDelete($("#del"), async () => { await api({ action: "delete", type: "resources", key: r.keyword }); await load(); toast("Resource deleted"); listResources(); });
+}
+
+/* Links */
+function editLinks() {
+  const names = ["Instagram", "YouTube", "WhatsApp Channel", "LinkedIn"];
+  const get = n => (DATA.links.find(l => String(l.platform).toLowerCase() === n.toLowerCase()) || {}).link || "";
+  $("#view").innerHTML = `<form class="panel" id="lf">
+    <h2 style="font-size:1.4rem;font-weight:800">Your profile links</h2>
+    <p class="hint">Empty = shows "link soon" on the website.</p>
+    ${names.map((n, i) => `<label for="l_${i}">${n}<input type="url" id="l_${i}" value="${esc(get(n))}" placeholder="https://"></label>`).join("")}
+    <div class="actionsbar"><button class="btn btn-navy" type="submit" id="save">Save links</button></div>
+  </form>`;
+  $("#lf").addEventListener("submit", async e => {
+    e.preventDefault(); $("#save").disabled = true; $("#save").textContent = "Saving…";
+    try {
+      for (let i = 0; i < names.length; i++) {
+        const v = $("#l_" + i).value.trim();
+        if (v !== get(names[i])) await api({ action: "save", type: "links", row: { platform: names[i], link: v } });
+      }
+      await load(); toast("Links saved"); editLinks();
+    } catch (err) { toast(err.message, true); $("#save").disabled = false; $("#save").textContent = "Save links"; }
+  });
+}
+
+/* About & page text */
+const TEXT_FIELDS = [
+  ["aboutHead", "About heading", "Hi, I'm Sabith", "ഹായ്, ഞാൻ സബിത്ത്", false],
+  ["aboutText", "About text", "I test AI tools and automations on real work every week, and share only what actually saves time, in simple Malayalam. No coding, no hype.", "എല്ലാ ആഴ്ചയും AI tools-ഉം automations-ഉം യഥാർത്ഥ ജോലിയിൽ പരീക്ഷിച്ച്, ശരിക്കും സമയം ലാഭിക്കുന്നവ മാത്രം ലളിതമായ മലയാളത്തിൽ പങ്കുവെക്കുന്നു. കോഡിംഗ് വേണ്ട, hype ഇല്ല.", true],
+  ["tagline", "Tagline under your name", "Practical AI & automation · Malayalam", "പ്രായോഗിക AI & automation · മലയാളം", false],
+  ["sub", "Line under the headline", "Save hours at work and in business.", "ജോലിയിലും ബിസിനസ്സിലും മണിക്കൂറുകൾ ലാഭിക്കാം.", false],
+  ["lead", "Intro sentence", "Every PDF and workflow from my reels, in one place. Download, copy and use it today.", "എന്റെ reels-ലെ എല്ലാ PDF-കളും workflows-ഉം ഒരിടത്ത്. ഇന്നുതന്നെ download ചെയ്ത് ഉപയോഗിക്കൂ.", true]
+];
+function editSettings() {
+  const cur = k => DATA.settings[k] || {};
+  $("#view").innerHTML = `<form class="panel" id="sf">
+    <h2 style="font-size:1.4rem;font-weight:800">About &amp; page text</h2>
+    <p class="hint">Change the wording on your home page in both languages.</p>
+    ${TEXT_FIELDS.map(([k, label, en, ml, long]) => `
+      <fieldset style="border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:12px">
+        <legend style="font-weight:700;padding:0 6px">${label}</legend>
+        <label for="s_${k}_en">English${long ? `<textarea id="s_${k}_en">${esc(cur(k).en || en)}</textarea>` : `<input type="text" id="s_${k}_en" value="${esc(cur(k).en || en)}">`}</label>
+        <label for="s_${k}_ml">Malayalam${long ? `<textarea id="s_${k}_ml" lang="ml">${esc(cur(k).ml || ml)}</textarea>` : `<input type="text" id="s_${k}_ml" lang="ml" value="${esc(cur(k).ml || ml)}">`}</label>
+      </fieldset>`).join("")}
+    <div class="actionsbar"><button class="btn btn-navy" type="submit" id="save">Save text</button></div>
+  </form>`;
+  $("#sf").addEventListener("submit", async e => {
+    e.preventDefault(); $("#save").disabled = true; $("#save").textContent = "Saving…";
+    try {
+      for (const [k, , en, ml] of TEXT_FIELDS) {
+        const vEn = $(`#s_${k}_en`).value.trim(), vMl = $(`#s_${k}_ml`).value.trim();
+        const c = cur(k);
+        if (vEn !== (c.en || en) || vMl !== (c.ml || ml) || !DATA.settings[k]) await api({ action: "save", type: "settings", row: { key: k, en: vEn, ml: vMl } });
+      }
+      await load(); toast("Text saved. Live within about a minute."); editSettings();
+    } catch (err) { toast(err.message, true); $("#save").disabled = false; $("#save").textContent = "Save text"; }
+  });
+}
+</script>
+</body>
+</html>
