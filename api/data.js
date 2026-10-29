@@ -4,7 +4,7 @@ const { getData } = require("./_lib");
 module.exports = async (req, res) => {
   try {
     const data = await getData();
-    res.setHeader("Cache-Control", data.connected ? "public, s-maxage=30, stale-while-revalidate=600" : "no-store");
+    res.setHeader("Cache-Control", data.connected ? "public, s-maxage=60, stale-while-revalidate=31536000" : "no-store");
     res.setHeader("Content-Type", "application/json; charset=utf-8");
     res.statusCode = 200;
     res.end(JSON.stringify(data));

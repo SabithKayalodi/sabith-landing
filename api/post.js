@@ -115,7 +115,7 @@ module.exports = async (req, res) => {
   };
 
   res.statusCode = 200;
-  res.setHeader("Cache-Control", data.connected ? "public, s-maxage=60, stale-while-revalidate=600" : "no-store");
+  res.setHeader("Cache-Control", data.connected ? "public, s-maxage=60, stale-while-revalidate=31536000" : "no-store");
   res.end(page({
     title, description, url, image, jsonld, article,
     data: { posts: [post], resources: res0 ? [res0] : [], links: data.links || [], settings: data.settings || {} }
