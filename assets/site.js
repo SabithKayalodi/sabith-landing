@@ -183,6 +183,7 @@ function renderPosts() {
       <p>${esc(pick(p, "summary"))}</p>
       <span class="meta" style="color:var(--ink);font-weight:700">${esc(t("read"))}</span>
     </a>`).join("") : `<p class="meta">${esc(t("noPosts"))}</p>`;
+  prefetchPosts(shown.slice(0, 3));
   const more = document.getElementById("more-posts");
   if (more) more.hidden = !(limit && list.length > limit);
 }
@@ -196,6 +197,17 @@ function renderLinks() {
     return u ? `<a class="fl" href="${esc(u)}" target="_blank" rel="noopener"><span><b>${name}</b><span>${esc(t(sk))}</span></span>${ARROW}</a>`
              : `<div class="fl"><span><b>${name}</b><span>${esc(t(sk))} · ${esc(t("linkSoon"))}</span></span></div>`;
   }).join("");
+}
+
+/* Load the newest posts quietly in the background so they open instantly */
+const prefetched = new Set();
+function prefetchPosts(list) {
+  const go = () => list.forEach(p => {
+    const href = "/post/" + encodeURIComponent(p.slug);
+    if (prefetched.has(href)) return; prefetched.add(href);
+    const l = document.createElement("link"); l.rel = "prefetch"; l.href = href; document.head.appendChild(l);
+  });
+  ("requestIdleCallback" in window) ? requestIdleCallback(go, { timeout: 3000 }) : setTimeout(go, 1500);
 }
 
 /* post text: blank line = paragraph, "- " = bullet, "## " = heading, links auto-detected */
