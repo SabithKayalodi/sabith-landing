@@ -183,7 +183,6 @@ function renderPosts() {
       <p>${esc(pick(p, "summary"))}</p>
       <span class="meta" style="color:var(--ink);font-weight:700">${esc(t("read"))}</span>
     </a>`).join("") : `<p class="meta">${esc(t("noPosts"))}</p>`;
-  prefetchPosts(shown.slice(0, 3));
   const more = document.getElementById("more-posts");
   if (more) more.hidden = !(limit && list.length > limit);
 }
@@ -199,33 +198,18 @@ function renderLinks() {
   }).join("");
 }
 
-/* Load the newest posts quietly in the background so they open instantly */
-const prefetched = new Set();
-function prefetchPosts(list) {
-  const go = () => list.forEach(p => {
-    const href = "/post/" + encodeURIComponent(p.slug);
-    if (prefetched.has(href)) return; prefetched.add(href);
-    const l = document.createElement("link"); l.rel = "prefetch"; l.href = href; document.head.appendChild(l);
-  });
-  ("requestIdleCallback" in window) ? requestIdleCallback(go, { timeout: 3000 }) : setTimeout(go, 1500);
-}
-
-/* post text: blank line = paragraph, "- " = bullet, "## " = heading, links auto-detected */
+/* post text → HTML (Markdown), from /assets/markdown.js */
 function formatBody(text) {
-  const link = s => s.replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`);
-  return String(text || "").replace(/\r/g, "").split(/\n\s*\n/).map(block => {
-    const lines = block.split("\n").filter(l => l.trim() !== "");
-    let html = "";
-    if (lines[0] && lines[0].startsWith("## ")) { html += `<h2>${link(esc(lines.shift().slice(3)))}</h2>`; }
-    if (!lines.length) return html;
-    if (lines.every(l => l.trim().startsWith("- "))) return html + `<ul>${lines.map(l => `<li>${link(esc(l.trim().slice(2)))}</li>`).join("")}</ul>`;
-    const bullets = lines.findIndex(l => l.trim().startsWith("- "));
-    if (bullets > 0 && lines.slice(bullets).every(l => l.trim().startsWith("- "))) {
-      return html + `<p>${lines.slice(0, bullets).map(l => link(esc(l))).join("<br>")}</p><ul>${lines.slice(bullets).map(l => `<li>${link(esc(l.trim().slice(2)))}</li>`).join("")}</ul>`;
-    }
-    return html + `<p>${lines.map(l => link(esc(l))).join("<br>")}</p>`;
-  }).join("");
+  return window.SabithMD ? window.SabithMD.render(text) : `<p>${esc(text).split("\n").join("<br>")}</p>`;
 }
+/* Copy buttons on code blocks inside posts */
+document.addEventListener("click", e => {
+  const b = e.target.closest(".body .code .copy"); if (!b) return;
+  const text = b.parentNode.querySelector("pre").innerText;
+  const done = () => { const t0 = b.textContent; b.textContent = "Copied ✓"; setTimeout(() => { b.textContent = t0; }, 1500); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, () => {});
+  else { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (x) {} ta.remove(); }
+});
 function renderPost() {
   const el = document.getElementById("post"); if (!el) return;
   if (state.posts === null) { el.innerHTML = `<p class="meta">${esc(t("loading"))}</p>`; return; }

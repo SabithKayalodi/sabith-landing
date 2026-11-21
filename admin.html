@@ -89,6 +89,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid var(--amber);outline-o
 </div>
 <div class="toast" id="toast" hidden role="status"></div>
 
+<script src="/assets/markdown.js"></script>
 <script>
 /* ---------- basics ---------- */
 const $ = s => document.querySelector(s);
@@ -135,21 +136,8 @@ document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click",
 }));
 if (PW) load().then(showApp).catch(() => { PW = ""; });
 
-/* ---------- formatting preview (same rules as the site) ---------- */
-function formatBody(text) {
-  const link = s => s.replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`);
-  return String(text || "").replace(/\r/g, "").split(/\n\s*\n/).map(block => {
-    const lines = block.split("\n").filter(l => l.trim() !== "");
-    let html = "";
-    if (lines[0] && lines[0].startsWith("## ")) html += `<h2>${link(esc(lines.shift().slice(3)))}</h2>`;
-    if (!lines.length) return html;
-    const isB = l => l.trim().startsWith("- "), li = l => `<li>${link(esc(l.trim().slice(2)))}</li>`;
-    if (lines.every(isB)) return html + `<ul>${lines.map(li).join("")}</ul>`;
-    const b = lines.findIndex(isB);
-    if (b > 0 && lines.slice(b).every(isB)) return html + `<p>${lines.slice(0, b).map(l => link(esc(l))).join("<br>")}</p><ul>${lines.slice(b).map(li).join("")}</ul>`;
-    return html + `<p>${lines.map(l => link(esc(l))).join("<br>")}</p>`;
-  }).join("");
-}
+/* ---------- formatting preview (same Markdown file as the site: /assets/markdown.js) ---------- */
+function formatBody(text) { return window.SabithMD ? SabithMD.render(text) : esc(text); }
 
 /* ---------- views ---------- */
 function render() {
@@ -215,7 +203,23 @@ function editPost(p) {
       <label for="f_title">Title ${ml ? "(Malayalam)" : "(English)"}<input type="text" id="f_title" value="${esc(vals["title_" + lang])}" lang="${lang}"></label>
       <label for="f_summary">One-line summary <small>Shown in the post list and on Google</small><input type="text" id="f_summary" value="${esc(vals["summary_" + lang])}" lang="${lang}"></label>
       <label for="f_body">Post text ${ml ? "(Malayalam)" : "(English)"}
-        <small>Empty line = new paragraph · start a line with "- " for a bullet · "## " for a sub-heading · links work automatically${ml ? " · leave empty to hide the Read in Malayalam button" : ""}</small>
+        <small>Empty line = new paragraph · "- " bullet · "1. " numbered step · "## " heading · **bold** · links work automatically${ml ? " · leave empty to hide the Read in Malayalam button" : ""}</small>
+        <details class="hint"><summary>More formatting: prompts with a Copy button, tables, tip boxes</summary>
+<pre style="white-space:pre-wrap;font:13px/1.6 ui-monospace,Menlo,Consolas,monospace;margin:8px 0 0">### Small heading
+
+\`\`\`
+Text people should copy (a prompt or command).
+It gets a Copy button. [WORDS IN CAPITALS] show in amber.
+\`\`\`
+
+| Tool | What it does |
+|---|---|
+| FFmpeg | Cuts video |
+
+&gt; **Tip** This becomes a yellow tip box.
+
+[Link text](https://sabith.com/ai-video-editor)
+![Image description](https://link-to-image.jpg)</pre></details>
         <textarea class="body" id="f_body" lang="${lang}">${esc(vals["body_" + lang])}</textarea></label>`;
     $("#f_title").addEventListener("input", e => { if (lang === "en" && !slugTouched.v) $("#f_slug").value = slugify(e.target.value); });
   }

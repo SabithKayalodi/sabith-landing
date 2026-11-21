@@ -1,4 +1,4 @@
-// GET /sitemap.xml → tells Google about the home page and every post
+// GET /sitemap.xml → tells Google about the home page, the guides and every post
 const { getData, visible, esc, baseUrl } = require("./_lib");
 
 module.exports = async (req, res) => {
@@ -8,6 +8,8 @@ module.exports = async (req, res) => {
   const urls = [
     { loc: base + "/", pri: "1.0" },
     { loc: base + "/posts", pri: "0.8" },
+    { loc: base + "/ai-video-editor", pri: "0.8" },
+    { loc: base + "/skillspector", pri: "0.8" },
     ...posts.map(p => ({ loc: `${base}/post/${encodeURIComponent(p.slug)}`, lastmod: /^\d{4}-\d{2}-\d{2}$/.test(p.date) ? p.date : "", pri: "0.7" }))
   ];
   res.setHeader("Content-Type", "application/xml; charset=utf-8");

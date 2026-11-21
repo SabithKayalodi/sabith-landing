@@ -46,22 +46,8 @@ async function getData() {
   return { ...j.data, connected: true };
 }
 
-// Same text formatting as the browser: blank line = paragraph, "- " = bullet, "## " = heading, links auto-detected
-function formatBody(text) {
-  const link = s => s.replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`);
-  return String(text || "").replace(/\r/g, "").split(/\n\s*\n/).map(block => {
-    const lines = block.split("\n").filter(l => l.trim() !== "");
-    let html = "";
-    if (lines[0] && lines[0].startsWith("## ")) html += `<h2>${link(esc(lines.shift().slice(3)))}</h2>`;
-    if (!lines.length) return html;
-    const isB = l => l.trim().startsWith("- ");
-    const li = l => `<li>${link(esc(l.trim().slice(2)))}</li>`;
-    if (lines.every(isB)) return html + `<ul>${lines.map(li).join("")}</ul>`;
-    const b = lines.findIndex(isB);
-    if (b > 0 && lines.slice(b).every(isB)) return html + `<p>${lines.slice(0, b).map(l => link(esc(l))).join("<br>")}</p><ul>${lines.slice(b).map(li).join("")}</ul>`;
-    return html + `<p>${lines.map(l => link(esc(l))).join("<br>")}</p>`;
-  }).join("");
-}
+// Post text → HTML (Markdown). Same file the browser and the admin preview use: /assets/markdown.js
+const { render: formatBody } = require("../assets/markdown.js");
 
 const plain = s => String(s || "").replace(/\s+/g, " ").trim();
 const baseUrl = req => `https://${req.headers["x-forwarded-host"] || req.headers.host || "localhost"}`;
