@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scan AI Skills Before You Install | SkillSpector Guide | Sabith</title>
+<meta name="description" content="Step-by-step guide in English and Malayalam: set up NVIDIA's free SkillSpector on Windows or Mac and scan any AI agent skill before you install it.">
+<meta property="og:title" content="Scan any AI skill before you install it (SkillSpector guide)">
+<meta property="og:description" content="Free step-by-step setup in English and Malayalam. Windows and Mac. About 10 minutes, one time.">
+<meta property="og:image" content="/assets/og.jpg">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#14213D">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  /* guide-only additions; colours and fonts come from /assets/style.css */
+  .guide{max-width:760px;padding-block:20px 40px}
+  .guide .back{display:inline-block;margin-bottom:18px;text-decoration:none;font-weight:600;color:var(--ink-2)}
+  .guide h1{font-size:clamp(2rem,6vw,3rem);font-weight:800;margin:12px 0 12px}
+  .guide .sub{font-family:var(--f-display);font-size:clamp(1.15rem,3vw,1.4rem);font-weight:700;color:var(--ink-2);margin-bottom:14px}
+  .guide .lead{color:var(--ink-2);font-size:1.08rem}
+  .guide h2{font-size:clamp(1.5rem,4vw,2rem);font-weight:800;margin:44px 0 14px}
+  .guide h3{font-size:1.25rem;font-weight:800;margin:0}
+  .guide p{margin:0 0 12px}
+  .guide ul,.guide ol{margin:0 0 12px;padding-left:1.25em;display:grid;gap:6px}
+  .guide a{color:var(--navy);font-weight:600}
+  .box{background:var(--amber-soft);border-radius:14px;padding:16px 18px;margin:18px 0;font-size:16px}
+  .box b{display:block;margin-bottom:4px}
+  .warn{background:#FFF0EE;border-left:5px solid #D93A2B}
+  .checks{display:grid;gap:12px;margin:16px 0}
+  .chk{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;border:1px solid var(--line);border-radius:14px;padding:16px}
+  .num{width:44px;height:44px;border-radius:50%;background:var(--amber);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 20px var(--f-display)}
+  .step{border:1px solid var(--line);border-radius:16px;padding:20px 20px 10px;margin:14px 0;background:#fff}
+  .step .top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .os{font:700 12px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+  .code{position:relative;background:#14171F;color:#F4F6FA;border-radius:12px;margin:6px 0 14px}
+  .code pre{margin:0;padding:14px 92px 14px 16px;font:500 14.5px/1.55 ui-monospace,Menlo,Consolas,"Cascadia Mono",monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+  .code button{position:absolute;top:8px;right:8px;border:0;border-radius:8px;background:var(--amber);color:var(--ink);font:700 13px var(--f-body);padding:7px 12px;min-height:34px;cursor:pointer}
+  code.i{font:600 .92em ui-monospace,Menlo,Consolas,monospace;background:#F1F2F5;border-radius:6px;padding:1px 6px}
+  table.score{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:15.5px}
+  table.score th,table.score td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:top}
+  table.score th{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .pill{display:inline-block;font:700 12px var(--f-body);letter-spacing:.06em;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .p-low{background:#DDF5E8;color:#0D6B43}.p-med{background:#FFF1C9;color:#7A5600}.p-high{background:#FFE0DC;color:#A3261A}.p-crit{background:#A3261A;color:#fff}
+  details{border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:12px 0}
+  details summary{cursor:pointer;font-weight:700}
+  details[open] summary{margin-bottom:10px}
+  .more{border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-top:36px;display:block;text-decoration:none;color:var(--ink)!important;font-weight:400!important}
+  .more:hover{border-color:var(--ink)}
+  .more b{display:block;font-size:1.1rem}
+  .src{font-size:14.5px;color:var(--ink-2)}
+  .src li{word-break:break-word}
+  [data-l]{display:none}
+  html[lang="en"] [data-l="en"],html[lang="ml"] [data-l="ml"]{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <a class="me" href="/">
+      <span class="avatar"><img src="/assets/sabith.jpg" alt="Sabith" width="52" height="52"></span>
+      <span><b>Sabith</b><span>Practical AI &amp; automation · Malayalam</span></span>
+    </a>
+    <div class="hright">
+      <nav aria-label="Sections">
+        <a href="/#free">Free resources</a>
+        <a href="/posts">Posts</a>
+        <a href="/#follow">Follow</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-set-lang="ml" aria-pressed="false">മലയാളം</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="guide">
+    <a class="back" href="/">← Home</a>
+
+<!-- ======================= ENGLISH ======================= -->
+<article data-l="en" lang="en">
+  <span class="tag">Free guide · SCAN</span>
+  <h1>Scan any AI skill <span class="hl">before you install it</span></h1>
+  <p class="sub">NVIDIA SkillSpector setup guide for Windows and Mac</p>
+  <p class="lead">Free skills arrive by DM and links every day, and many are genuinely useful. But a skill is not just a prompt: it can run code on your laptop, the same laptop that has your client files and saved passwords. SkillSpector is a free, open-source scanner from NVIDIA that checks a skill <b>before</b> you install it. Setup takes about 10 minutes, one time.</p>
+
+  <div class="box"><b>Why bother?</b>In a study of 31,132 skills from public marketplaces, 26.1% had at least one vulnerability, and skills with executable scripts were 2.12 times more likely to be vulnerable (Liu et al., 2026, cited in the SkillSpector README).</div>
+
+  <h2>The 3 checks I do before installing any skill</h2>
+  <div class="checks">
+    <div class="chk"><span class="num">1</span><div><h3>Read the SKILL.md file</h3><p>Open it and read it. Does it ask for passwords, API keys or access it doesn't need for its job? Delete it.</p></div></div>
+    <div class="chk"><span class="num">2</span><div><h3>Scan it with SkillSpector</h3><p>Paste the GitHub link and get a risk score out of 100. Above 50? Don't install it.</p></div></div>
+    <div class="chk"><span class="num">3</span><div><h3>Has a script? Test it in an empty folder first</h3><p>Try it in a fresh folder with nothing important in it before you use it on real work.</p></div></div>
+  </div>
+  <p>The rest of this page sets up check 2.</p>
+
+  <h2>Part A: One-time setup (about 10 minutes)</h2>
+
+  <div class="step">
+    <div class="top"><span class="num">1</span><h3>Open the terminal</h3></div>
+    <p><b>Windows:</b> press the Start button, type <b>PowerShell</b> and open <b>Windows PowerShell</b> (no need for "Run as administrator").</p>
+    <p><b>Mac:</b> press <b>Cmd + Space</b>, type <b>Terminal</b> and press Enter.</p>
+    <p>Every command below goes into this window. Copy it with the <b>Copy</b> button, paste it, and press <b>Enter</b>.</p>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">2</span><h3>Install Git</h3></div>
+    <p>SkillSpector is installed straight from its GitHub page, so your computer needs Git. Check first:</p>
+    <div class="code"><pre>git --version</pre><button type="button">Copy</button></div>
+    <p>If you see a version number (like <code class="i">git version 2.x</code>), skip to step 3. If not:</p>
+    <p class="os">Windows</p>
+    <div class="code"><pre>winget install --id Git.Git -e</pre><button type="button">Copy</button></div>
+    <p>If <code class="i">winget</code> isn't found, download the installer from <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">git-scm.com/downloads</a> and click Next through it.</p>
+    <p class="os">Mac</p>
+    <div class="code"><pre>xcode-select --install</pre><button type="button">Copy</button></div>
+    <p>Click <b>Install</b> in the window that opens. When it finishes, <b>close the terminal and open it again</b>.</p>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">3</span><h3>Install uv (a free Python tool installer)</h3></div>
+    <p>uv installs SkillSpector and downloads the right Python version for it by itself, so you don't need to install Python separately.</p>
+    <p class="os">Windows (PowerShell)</p>
+    <div class="code"><pre>powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</pre><button type="button">Copy</button></div>
+    <p class="os">Mac (Terminal)</p>
+    <div class="code"><pre>curl -LsSf https://astral.sh/uv/install.sh | sh</pre><button type="button">Copy</button></div>
+    <p><b>Close the terminal and open it again</b>, then check:</p>
+    <div class="code"><pre>uv --version</pre><button type="button">Copy</button></div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">4</span><h3>Install SkillSpector</h3></div>
+    <p>Same command on Windows and Mac. It takes a minute or two the first time.</p>
+    <div class="code"><pre>uv tool install --python 3.13 git+https://github.com/NVIDIA/skillspector.git</pre><button type="button">Copy</button></div>
+    <p>If the next step says <i>"skillspector is not recognized"</i> or <i>"command not found"</i>, run this, then close and reopen the terminal:</p>
+    <div class="code"><pre>uv tool update-shell</pre><button type="button">Copy</button></div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">5</span><h3>Check it works</h3></div>
+    <div class="code"><pre>skillspector scan --help</pre><button type="button">Copy</button></div>
+    <p>You should see a list of options such as <code class="i">--format</code> and <code class="i">--no-llm</code>. Setup is done.</p>
+  </div>
+
+  <h2>Part B: Scan a skill (every time, 1 minute)</h2>
+
+  <div class="step">
+    <div class="top"><span class="num">6</span><h3>Scan it</h3></div>
+    <p><b>Skill on GitHub:</b> copy the link of the skill's GitHub page from your browser and put it in place of the example link:</p>
+    <div class="code"><pre>skillspector scan https://github.com/OWNER/SKILL-NAME --no-llm</pre><button type="button">Copy</button></div>
+    <p><b>Skill you downloaded as a .zip:</b></p>
+    <p class="os">Windows</p>
+    <div class="code"><pre>skillspector scan "$HOME\Downloads\skill-name.zip" --no-llm</pre><button type="button">Copy</button></div>
+    <p class="os">Mac</p>
+    <div class="code"><pre>skillspector scan ~/Downloads/skill-name.zip --no-llm</pre><button type="button">Copy</button></div>
+    <p>You can also scan an unzipped folder or a single <code class="i">SKILL.md</code> file the same way: put its path after <code class="i">scan</code>, in quotes if it has spaces.</p>
+    <div class="box"><b>Why <code class="i">--no-llm</code>?</b>It keeps the skill's files on your computer and needs no API key. Without it, SkillSpector also sends the files to an AI model for a deeper check, which needs an API key (see "Extras" below).</div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">7</span><h3>Read the result</h3></div>
+    <p>At the end you'll see a <b>Score out of 100</b>, a <b>Severity</b> and a <b>Recommendation</b>, followed by each finding with what it is and which file and line it's in.</p>
+    <table class="score">
+      <thead><tr><th>Score</th><th>Severity</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>0 to 20</td><td><span class="pill p-low">LOW · SAFE</span></td><td>OK to install. Still do check 1 (read SKILL.md).</td></tr>
+        <tr><td>21 to 50</td><td><span class="pill p-med">MEDIUM · CAUTION</span></td><td>Read every finding. Install only if you understand each one and it makes sense for what the skill does.</td></tr>
+        <tr><td>51 to 80</td><td><span class="pill p-high">HIGH</span></td><td><b>Don't install.</b></td></tr>
+        <tr><td>81 to 100</td><td><span class="pill p-crit">CRITICAL</span></td><td><b>Don't install.</b></td></tr>
+      </tbody>
+    </table>
+    <p>Score bands and recommendations are from the SkillSpector README.</p>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">8</span><h3>Skill has scripts? Test it in an empty folder</h3></div>
+    <ol>
+      <li>Make a new, empty folder, for example <code class="i">skill-test</code> on your Desktop. Keep client files, passwords and <code class="i">.env</code> files out of it.</li>
+      <li>Install the skill only for that folder. In Claude Code that means putting it in <code class="i">skill-test/.claude/skills/</code>, not in your personal skills folder.</li>
+      <li>Open your AI tool in that folder, run the skill once, and watch what it asks to do: files it wants to read, commands it wants to run, websites it wants to reach.</li>
+      <li>Only if everything looks right, install it where you do real work.</li>
+    </ol>
+  </div>
+
+  <h2>Extras (optional)</h2>
+
+  <details>
+    <summary>Update SkillSpector later</summary>
+    <div class="code"><pre>uv tool upgrade skillspector</pre><button type="button">Copy</button></div>
+  </details>
+
+  <details>
+    <summary>Deeper AI check (needs an API key)</summary>
+    <p>Run the scan without <code class="i">--no-llm</code> and SkillSpector adds an AI review on top of its built-in checks. It uses NVIDIA's model service by default, which needs an <code class="i">NVIDIA_INFERENCE_KEY</code>; other providers (OpenAI, Anthropic, a local Ollama model) are also supported. This sends the skill's file contents to that provider. Setup details are in the <a href="https://github.com/NVIDIA/SkillSpector" target="_blank" rel="noopener">SkillSpector README</a>.</p>
+  </details>
+
+  <details>
+    <summary>Use it from inside Claude Code (advanced)</summary>
+    <p>Install the version with the MCP extra, then add it to Claude Code:</p>
+    <div class="code"><pre>uv tool install --python 3.13 --force "skillspector[mcp] @ git+https://github.com/NVIDIA/skillspector.git"</pre><button type="button">Copy</button></div>
+    <div class="code"><pre>claude mcp add skillspector -- skillspector mcp</pre><button type="button">Copy</button></div>
+    <p>Then you can ask Claude Code to "scan this skill with SkillSpector" before installing it.</p>
+  </details>
+
+  <h2>Good to know</h2>
+  <div class="box warn"><b>A low score is not a guarantee.</b>SkillSpector never runs the skill; it reads the files and flags risky patterns. It doesn't protect you if you install a risky skill anyway, and it can miss tricks hidden in images, encrypted or compiled code, and text in languages other than English (so a skill written in Malayalam deserves an extra careful read). Keep doing checks 1 and 3.</div>
+  <ul>
+    <li>Even with <code class="i">--no-llm</code>, SkillSpector looks up the skill's dependency names (not your files) in the public OSV.dev vulnerability database.</li>
+    <li>On Windows, saving the report to a file with <code class="i">--output</code> isn't supported. Read the result in the terminal.</li>
+  </ul>
+
+  <h2>If something goes wrong</h2>
+  <table class="score">
+    <thead><tr><th>Problem</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td>"skillspector is not recognized" / "command not found"</td><td>Run <code class="i">uv tool update-shell</code>, then close and reopen the terminal.</td></tr>
+      <tr><td>"git" not found during step 4</td><td>Do step 2, then close and reopen the terminal and run step 4 again.</td></tr>
+      <tr><td>"uv" not found after step 3</td><td>Close and reopen the terminal. On Windows, open a new PowerShell window.</td></tr>
+      <tr><td>Scan stops with an error about the source</td><td>Check the link is the skill's GitHub page and the file path is correct and in quotes.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Sources</h2>
+  <ul class="src">
+    <li>SkillSpector on GitHub (NVIDIA, Apache 2.0): <a href="https://github.com/NVIDIA/SkillSpector" target="_blank" rel="noopener">github.com/NVIDIA/SkillSpector</a></li>
+    <li>NVIDIA docs, Scan Agent Skills Before Installation: <a href="https://docs.nvidia.com/skills/scanning-agent-skills" target="_blank" rel="noopener">docs.nvidia.com/skills/scanning-agent-skills</a></li>
+    <li>uv installation: <a href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank" rel="noopener">docs.astral.sh/uv</a></li>
+    <li>Git downloads: <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">git-scm.com/downloads</a></li>
+  </ul>
+  <p class="src">Not affiliated with NVIDIA. Commands checked against the official README in November 2026; if something has changed, the README is the final word.</p>
+
+  <a class="more" href="/ai-video-editor"><span class="tag">Next guide · EDIT</span><b style="margin-top:10px">Build your own AI video editor with Claude Code →</b>4 steps, 5 free tools, 3 copy-paste prompts.</a>
+</article>
+
+<!-- ======================= MALAYALAM ======================= -->
+<article data-l="ml" lang="ml">
+  <span class="tag">Free guide · SCAN</span>
+  <h1>ഏത് AI skill-ഉം <span class="hl">install ചെയ്യുന്നതിന് മുൻപ് scan ചെയ്യൂ</span></h1>
+  <p class="sub">NVIDIA SkillSpector setup guide · Windows, Mac</p>
+  <p class="lead">DM-ലോ link ആയോ ദിവസവും free skills കിട്ടും. പലതും ശരിക്കും ഉപകാരമുള്ളതാണ്. പക്ഷേ ഒരു skill വെറും prompt അല്ല. അതിന് നിങ്ങളുടെ laptop-ൽ code run ചെയ്യാൻ പറ്റും, client files-ഉം saved passwords-ഉം ഉള്ള അതേ laptop-ൽ. NVIDIA ഉണ്ടാക്കിയ സൗജന്യ, open-source scanner ആണ് SkillSpector. Skill install ചെയ്യുന്നതിന് <b>മുൻപ്</b> അത് check ചെയ്യും. Setup ഒരു തവണ മാത്രം, ഏകദേശം 10 മിനിറ്റ്.</p>
+
+  <div class="box"><b>എന്തിന് check ചെയ്യണം?</b>Public marketplaces-ലെ 31,132 skills പഠിച്ചപ്പോൾ 26.1%-ൽ കുറഞ്ഞത് ഒരു vulnerability എങ്കിലും ഉണ്ടായിരുന്നു. Executable scripts ഉള്ള skills-ന് vulnerable ആകാനുള്ള സാധ്യത 2.12 മടങ്ങ് കൂടുതലാണ് (Liu et al., 2026; SkillSpector README-ൽ കൊടുത്തിരിക്കുന്ന പഠനം).</div>
+
+  <h2>ഏത് skill install ചെയ്യുന്നതിന് മുൻപും ഞാൻ ചെയ്യുന്ന 3 checks</h2>
+  <div class="checks">
+    <div class="chk"><span class="num">1</span><div><h3>SKILL.md file വായിക്കൂ</h3><p>File തുറന്ന് വായിക്കുക. ആ ജോലിക്ക് ആവശ്യമില്ലാത്ത password-ഓ API key-യോ access-ഓ ചോദിക്കുന്നുണ്ടോ? Delete ചെയ്യൂ.</p></div></div>
+    <div class="chk"><span class="num">2</span><div><h3>SkillSpector-ൽ scan ചെയ്യൂ</h3><p>GitHub link paste ചെയ്താൽ നൂറിൽ ഒരു risk score കിട്ടും. അമ്പതിന് മുകളിലാണോ? Install ചെയ്യരുത്.</p></div></div>
+    <div class="chk"><span class="num">3</span><div><h3>Script ഉണ്ടോ? ആദ്യം ഒരു empty folder-ൽ test ചെയ്യൂ</h3><p>പ്രധാനപ്പെട്ട ഒന്നുമില്ലാത്ത ഒരു പുതിയ folder-ൽ ആദ്യം try ചെയ്യുക. അതിനുശേഷം മാത്രം യഥാർത്ഥ ജോലിയിൽ ഉപയോഗിക്കുക.</p></div></div>
+  </div>
+  <p>ഇനിയുള്ള steps check 2 set up ചെയ്യാനുള്ളതാണ്.</p>
+
+  <h2>Part A: ഒറ്റത്തവണ setup (ഏകദേശം 10 മിനിറ്റ്)</h2>
+
+  <div class="step">
+    <div class="top"><span class="num">1</span><h3>Terminal തുറക്കുക</h3></div>
+    <p><b>Windows:</b> Start button അമർത്തി <b>PowerShell</b> എന്ന് type ചെയ്ത് <b>Windows PowerShell</b> തുറക്കുക ("Run as administrator" വേണ്ട).</p>
+    <p><b>Mac:</b> <b>Cmd + Space</b> അമർത്തി <b>Terminal</b> എന്ന് type ചെയ്ത് Enter അമർത്തുക.</p>
+    <p>താഴെയുള്ള എല്ലാ commands-ഉം ഈ window-ൽ ആണ് type ചെയ്യേണ്ടത്. <b>Copy</b> button അമർത്തി copy ചെയ്യുക, paste ചെയ്യുക, പിന്നെ <b>Enter</b> അമർത്തുക.</p>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">2</span><h3>Git install ചെയ്യുക</h3></div>
+    <p>SkillSpector അതിന്റെ GitHub page-ൽ നിന്ന് നേരിട്ടാണ് install ചെയ്യുന്നത്. അതിന് computer-ൽ Git വേണം. ആദ്യം check ചെയ്യുക:</p>
+    <div class="code"><pre>git --version</pre><button type="button">Copy</button></div>
+    <p>ഒരു version number കണ്ടാൽ (ഉദാ: <code class="i">git version 2.x</code>) step 3-ലേക്ക് പോകാം. ഇല്ലെങ്കിൽ:</p>
+    <p class="os">Windows</p>
+    <div class="code"><pre>winget install --id Git.Git -e</pre><button type="button">Copy</button></div>
+    <p><code class="i">winget</code> കിട്ടുന്നില്ലെങ്കിൽ <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">git-scm.com/downloads</a>-ൽ നിന്ന് installer download ചെയ്ത് Next അമർത്തി install ചെയ്യുക.</p>
+    <p class="os">Mac</p>
+    <div class="code"><pre>xcode-select --install</pre><button type="button">Copy</button></div>
+    <p>തുറന്നുവരുന്ന window-ൽ <b>Install</b> അമർത്തുക. കഴിഞ്ഞാൽ <b>terminal close ചെയ്ത് വീണ്ടും തുറക്കുക</b>.</p>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">3</span><h3>uv install ചെയ്യുക (സൗജന്യ Python tool installer)</h3></div>
+    <p>uv ആണ് SkillSpector install ചെയ്യുന്നത്. അതിനുവേണ്ട Python version-ഉം uv തന്നെ download ചെയ്യും. Python വേറെ install ചെയ്യേണ്ട.</p>
+    <p class="os">Windows (PowerShell)</p>
+    <div class="code"><pre>powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</pre><button type="button">Copy</button></div>
+    <p class="os">Mac (Terminal)</p>
+    <div class="code"><pre>curl -LsSf https://astral.sh/uv/install.sh | sh</pre><button type="button">Copy</button></div>
+    <p><b>Terminal close ചെയ്ത് വീണ്ടും തുറക്കുക</b>, എന്നിട്ട് check ചെയ്യുക:</p>
+    <div class="code"><pre>uv --version</pre><button type="button">Copy</button></div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">4</span><h3>SkillSpector install ചെയ്യുക</h3></div>
+    <p>Windows-ലും Mac-ലും ഒരേ command. ആദ്യത്തെ തവണ ഒന്നോ രണ്ടോ മിനിറ്റ് എടുക്കും.</p>
+    <div class="code"><pre>uv tool install --python 3.13 git+https://github.com/NVIDIA/skillspector.git</pre><button type="button">Copy</button></div>
+    <p>അടുത്ത step-ൽ <i>"skillspector is not recognized"</i> എന്നോ <i>"command not found"</i> എന്നോ വന്നാൽ ഇത് run ചെയ്യുക, എന്നിട്ട് terminal close ചെയ്ത് വീണ്ടും തുറക്കുക:</p>
+    <div class="code"><pre>uv tool update-shell</pre><button type="button">Copy</button></div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">5</span><h3>ശരിയായി install ആയോ എന്ന് check ചെയ്യുക</h3></div>
+    <div class="code"><pre>skillspector scan --help</pre><button type="button">Copy</button></div>
+    <p><code class="i">--format</code>, <code class="i">--no-llm</code> പോലുള്ള options-ന്റെ ഒരു list കാണും. Setup കഴിഞ്ഞു.</p>
+  </div>
+
+  <h2>Part B: Skill scan ചെയ്യാം (ഓരോ തവണയും, 1 മിനിറ്റ്)</h2>
+
+  <div class="step">
+    <div class="top"><span class="num">6</span><h3>Scan ചെയ്യുക</h3></div>
+    <p><b>Skill GitHub-ൽ ആണെങ്കിൽ:</b> browser-ൽ നിന്ന് skill-ന്റെ GitHub page link copy ചെയ്ത്, താഴെയുള്ള example link-ന് പകരം കൊടുക്കുക:</p>
+    <div class="code"><pre>skillspector scan https://github.com/OWNER/SKILL-NAME --no-llm</pre><button type="button">Copy</button></div>
+    <p><b>.zip ആയി download ചെയ്ത skill ആണെങ്കിൽ:</b></p>
+    <p class="os">Windows</p>
+    <div class="code"><pre>skillspector scan "$HOME\Downloads\skill-name.zip" --no-llm</pre><button type="button">Copy</button></div>
+    <p class="os">Mac</p>
+    <div class="code"><pre>skillspector scan ~/Downloads/skill-name.zip --no-llm</pre><button type="button">Copy</button></div>
+    <p>Unzip ചെയ്ത folder-ഓ ഒരു <code class="i">SKILL.md</code> file മാത്രമോ ഇതുപോലെ scan ചെയ്യാം: <code class="i">scan</code> കഴിഞ്ഞ് അതിന്റെ path കൊടുക്കുക. Path-ൽ space ഉണ്ടെങ്കിൽ quotes-നുള്ളിൽ കൊടുക്കുക.</p>
+    <div class="box"><b><code class="i">--no-llm</code> എന്തിന്?</b>Skill-ന്റെ files നിങ്ങളുടെ computer-ൽ തന്നെ നിൽക്കും, API key-യും വേണ്ട. ഇത് ഇല്ലാതെ run ചെയ്താൽ, കൂടുതൽ ആഴത്തിലുള്ള check-നായി SkillSpector files ഒരു AI model-ന് അയയ്ക്കും. അതിന് API key വേണം (താഴെ "Extras" നോക്കുക).</div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">7</span><h3>Result വായിക്കുക</h3></div>
+    <p>അവസാനം <b>Score (100-ൽ)</b>, <b>Severity</b>, <b>Recommendation</b> എന്നിവ കാണും. അതിനു താഴെ ഓരോ finding-ഉം, അത് എന്താണെന്നും ഏത് file-ൽ, ഏത് line-ൽ ആണെന്നും കാണിക്കും.</p>
+    <table class="score">
+      <thead><tr><th>Score</th><th>Severity</th><th>എന്ത് ചെയ്യണം</th></tr></thead>
+      <tbody>
+        <tr><td>0 മുതൽ 20</td><td><span class="pill p-low">LOW · SAFE</span></td><td>Install ചെയ്യാം. എന്നാലും check 1 (SKILL.md വായിക്കൽ) ചെയ്യുക.</td></tr>
+        <tr><td>21 മുതൽ 50</td><td><span class="pill p-med">MEDIUM · CAUTION</span></td><td>ഓരോ finding-ഉം വായിക്കുക. ഓരോന്നും മനസ്സിലായി, skill ചെയ്യുന്ന ജോലിക്ക് അത് ആവശ്യമാണെങ്കിൽ മാത്രം install ചെയ്യുക.</td></tr>
+        <tr><td>51 മുതൽ 80</td><td><span class="pill p-high">HIGH</span></td><td><b>Install ചെയ്യരുത്.</b></td></tr>
+        <tr><td>81 മുതൽ 100</td><td><span class="pill p-crit">CRITICAL</span></td><td><b>Install ചെയ്യരുത്.</b></td></tr>
+      </tbody>
+    </table>
+    <p>Score ranges-ഉം recommendations-ഉം SkillSpector README-ൽ നിന്നുള്ളതാണ്.</p>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">8</span><h3>Skill-ൽ scripts ഉണ്ടോ? ഒരു empty folder-ൽ test ചെയ്യുക</h3></div>
+    <ol>
+      <li>ഒരു പുതിയ, ഒഴിഞ്ഞ folder ഉണ്ടാക്കുക. ഉദാ: Desktop-ൽ <code class="i">skill-test</code>. Client files, passwords, <code class="i">.env</code> files ഒന്നും അതിൽ വയ്ക്കരുത്.</li>
+      <li>Skill ആ folder-ന് മാത്രമായി install ചെയ്യുക. Claude Code-ൽ ആണെങ്കിൽ <code class="i">skill-test/.claude/skills/</code>-ൽ വയ്ക്കുക, നിങ്ങളുടെ personal skills folder-ൽ അല്ല.</li>
+      <li>ആ folder-ൽ AI tool തുറന്ന് skill ഒരു തവണ run ചെയ്യുക. അത് എന്തൊക്കെ ചെയ്യാൻ ചോദിക്കുന്നു എന്ന് ശ്രദ്ധിക്കുക: ഏത് files വായിക്കാൻ, ഏത് commands run ചെയ്യാൻ, ഏത് websites-ലേക്ക് connect ചെയ്യാൻ.</li>
+      <li>എല്ലാം ശരിയാണെന്ന് തോന്നിയാൽ മാത്രം യഥാർത്ഥ ജോലി ചെയ്യുന്നിടത്ത് install ചെയ്യുക.</li>
+    </ol>
+  </div>
+
+  <h2>Extras (വേണമെങ്കിൽ മാത്രം)</h2>
+
+  <details>
+    <summary>പിന്നീട് SkillSpector update ചെയ്യാൻ</summary>
+    <div class="code"><pre>uv tool upgrade skillspector</pre><button type="button">Copy</button></div>
+  </details>
+
+  <details>
+    <summary>കൂടുതൽ ആഴത്തിലുള്ള AI check (API key വേണം)</summary>
+    <p><code class="i">--no-llm</code> ഇല്ലാതെ scan run ചെയ്താൽ, built-in checks-ന് പുറമേ ഒരു AI review-ഉം SkillSpector ചെയ്യും. Default ആയി NVIDIA-യുടെ model service ആണ് ഉപയോഗിക്കുന്നത്. അതിന് <code class="i">NVIDIA_INFERENCE_KEY</code> വേണം. OpenAI, Anthropic, local Ollama model പോലുള്ള മറ്റ് providers-ഉം ഉപയോഗിക്കാം. ഇങ്ങനെ ചെയ്യുമ്പോൾ skill-ന്റെ file contents ആ provider-ന് അയയ്ക്കും. Setup വിവരങ്ങൾ <a href="https://github.com/NVIDIA/SkillSpector" target="_blank" rel="noopener">SkillSpector README</a>-ൽ ഉണ്ട്.</p>
+  </details>
+
+  <details>
+    <summary>Claude Code-നുള്ളിൽ നിന്ന് ഉപയോഗിക്കാൻ (advanced)</summary>
+    <p>MCP extra ഉള്ള version install ചെയ്യുക, എന്നിട്ട് Claude Code-ൽ add ചെയ്യുക:</p>
+    <div class="code"><pre>uv tool install --python 3.13 --force "skillspector[mcp] @ git+https://github.com/NVIDIA/skillspector.git"</pre><button type="button">Copy</button></div>
+    <div class="code"><pre>claude mcp add skillspector -- skillspector mcp</pre><button type="button">Copy</button></div>
+    <p>ഇനി ഒരു skill install ചെയ്യുന്നതിന് മുൻപ് Claude Code-നോട് "scan this skill with SkillSpector" എന്ന് പറഞ്ഞാൽ മതി.</p>
+  </details>
+
+  <h2>അറിഞ്ഞിരിക്കേണ്ടത്</h2>
+  <div class="box warn"><b>Score കുറവാണെന്നത് ഒരു guarantee അല്ല.</b>SkillSpector skill run ചെയ്യുന്നില്ല. Files വായിച്ച് അപകടസാധ്യതയുള്ള patterns കണ്ടെത്തുക മാത്രമാണ് ചെയ്യുന്നത്. Risk ഉള്ള skill നിങ്ങൾ install ചെയ്താൽ അത് നിങ്ങളെ സംരക്ഷിക്കില്ല. Images-ലോ encrypted / compiled code-ലോ ഒളിപ്പിച്ച കാര്യങ്ങളും, English അല്ലാത്ത ഭാഷകളിലെ text-ഉം അത് miss ചെയ്യാം. അതുകൊണ്ട് Malayalam-ൽ എഴുതിയ ഒരു skill കൂടുതൽ ശ്രദ്ധിച്ച് വായിക്കണം. Check 1-ഉം 3-ഉം തുടർന്നും ചെയ്യുക.</div>
+  <ul>
+    <li><code class="i">--no-llm</code> ഉപയോഗിച്ചാലും, skill-ന്റെ dependency names (നിങ്ങളുടെ files അല്ല) public OSV.dev vulnerability database-ൽ SkillSpector check ചെയ്യും.</li>
+    <li>Windows-ൽ <code class="i">--output</code> ഉപയോഗിച്ച് report ഒരു file ആയി save ചെയ്യാൻ പറ്റില്ല. Result terminal-ൽ തന്നെ വായിക്കുക.</li>
+  </ul>
+
+  <h2>എന്തെങ്കിലും പ്രശ്നം വന്നാൽ</h2>
+  <table class="score">
+    <thead><tr><th>പ്രശ്നം</th><th>പരിഹാരം</th></tr></thead>
+    <tbody>
+      <tr><td>"skillspector is not recognized" / "command not found"</td><td><code class="i">uv tool update-shell</code> run ചെയ്യുക, എന്നിട്ട് terminal close ചെയ്ത് വീണ്ടും തുറക്കുക.</td></tr>
+      <tr><td>Step 4-ൽ "git" കിട്ടുന്നില്ല</td><td>Step 2 ചെയ്യുക, terminal close ചെയ്ത് വീണ്ടും തുറന്ന് step 4 വീണ്ടും run ചെയ്യുക.</td></tr>
+      <tr><td>Step 3 കഴിഞ്ഞിട്ടും "uv" കിട്ടുന്നില്ല</td><td>Terminal close ചെയ്ത് വീണ്ടും തുറക്കുക. Windows-ൽ ഒരു പുതിയ PowerShell window തുറക്കുക.</td></tr>
+      <tr><td>Source-നെക്കുറിച്ചുള്ള error വന്ന് scan നിൽക്കുന്നു</td><td>Link skill-ന്റെ GitHub page ആണോ, file path ശരിയാണോ, quotes-നുള്ളിലാണോ എന്ന് check ചെയ്യുക.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Sources</h2>
+  <ul class="src">
+    <li>SkillSpector, GitHub (NVIDIA, Apache 2.0): <a href="https://github.com/NVIDIA/SkillSpector" target="_blank" rel="noopener">github.com/NVIDIA/SkillSpector</a></li>
+    <li>NVIDIA docs, Scan Agent Skills Before Installation: <a href="https://docs.nvidia.com/skills/scanning-agent-skills" target="_blank" rel="noopener">docs.nvidia.com/skills/scanning-agent-skills</a></li>
+    <li>uv installation: <a href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank" rel="noopener">docs.astral.sh/uv</a></li>
+    <li>Git downloads: <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">git-scm.com/downloads</a></li>
+  </ul>
+  <p class="src">NVIDIA-യുമായി ബന്ധമില്ല. Commands 2026 November-ൽ official README-യുമായി ഒത്തുനോക്കിയതാണ്. എന്തെങ്കിലും മാറിയിട്ടുണ്ടെങ്കിൽ README ആണ് അവസാന വാക്ക്.</p>
+
+  <a class="more" href="/ai-video-editor?lang=ml"><span class="tag">അടുത്ത guide · EDIT</span><b style="margin-top:10px">Claude Code വെച്ച് സ്വന്തം AI video editor ഉണ്ടാക്കാം →</b>4 steps, 5 സൗജന്യ tools, copy-paste ചെയ്യാവുന്ന 3 prompts.</a>
+</article>
+
+  </main>
+
+  <footer>
+    <span>© 2026 Sabith</span>
+    <span>Kerala, India</span>
+  </footer>
+</div>
+<script>
+/* Language: same choice as the rest of the site (localStorage "sb_lang", or ?lang=ml / ?lang=en) */
+(function () {
+  var get = function () { try { return JSON.parse(localStorage.getItem("sb_lang")); } catch (e) { return null; } };
+  var set = function (v) { try { localStorage.setItem("sb_lang", JSON.stringify(v)); } catch (e) {} };
+  var q = new URLSearchParams(location.search).get("lang");
+  var lang = (q === "ml" || q === "en") ? q : (get() === "ml" ? "ml" : "en");
+  function apply(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    document.querySelectorAll("[data-set-lang]").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.setLang === l ? "true" : "false"); });
+  }
+  apply(lang);
+  if (q) set(q);
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-set-lang]");
+    if (b) { set(b.dataset.setLang); apply(b.dataset.setLang); return; }
+    var c = e.target.closest(".code button");
+    if (c) {
+      var text = c.parentNode.querySelector("pre").innerText;
+      var done = function () { var t = c.textContent; c.textContent = lang === "ml" ? "Copied ✓" : "Copied ✓"; setTimeout(function () { c.textContent = t; }, 1500); };
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, function () {});
+      else { var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (x) {} ta.remove(); }
+    }
+  });
+})();
+</script>
+</body>
+</html>

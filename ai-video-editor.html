@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Build Your Own AI Video Editor with Claude Code | Free Guide | Sabith</title>
+<meta name="description" content="Step-by-step guide in English and Malayalam: set up Claude Code with Remotion, HyperFrames, FFmpeg, Whisper and yt-dlp, and edit Reels with 3 copy-paste prompts.">
+<meta property="og:title" content="Build your own AI video editor with Claude Code (free guide)">
+<meta property="og:description" content="From an empty folder to a finished Reel. 4 steps, 5 free tools, 3 copy-paste prompts. English and Malayalam.">
+<meta property="og:image" content="/assets/og.jpg">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#14213D">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  /* guide-only additions; colours and fonts come from /assets/style.css */
+  .guide{max-width:760px;padding-block:20px 40px}
+  .guide .back{display:inline-block;margin-bottom:18px;text-decoration:none;font-weight:600;color:var(--ink-2)}
+  .guide h1{font-size:clamp(2rem,6vw,3rem);font-weight:800;margin:12px 0 12px}
+  .guide .sub{font-family:var(--f-display);font-size:clamp(1.15rem,3vw,1.4rem);font-weight:700;color:var(--ink-2);margin-bottom:14px}
+  .guide .lead{color:var(--ink-2);font-size:1.08rem}
+  .guide h2{font-size:clamp(1.5rem,4vw,2rem);font-weight:800;margin:44px 0 14px}
+  .guide h3{font-size:1.25rem;font-weight:800;margin:0}
+  .guide p{margin:0 0 12px}
+  .guide ul,.guide ol{margin:0 0 12px;padding-left:1.25em;display:grid;gap:6px}
+  .guide a{color:var(--navy);font-weight:600}
+  .box{background:var(--amber-soft);border-radius:14px;padding:16px 18px;margin:18px 0;font-size:16px}
+  .box b{display:block;margin-bottom:4px}
+  .num{width:44px;height:44px;border-radius:50%;background:var(--amber);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 20px var(--f-display);flex:none}
+  .step{border:1px solid var(--line);border-radius:16px;padding:20px 20px 10px;margin:14px 0;background:#fff}
+  .step .top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .os{font:700 12px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+  .code{position:relative;background:#14171F;color:#F4F6FA;border-radius:12px;margin:6px 0 14px}
+  .code pre{margin:0;padding:14px 92px 14px 16px;font:500 14.5px/1.55 ui-monospace,Menlo,Consolas,"Cascadia Mono",monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+  .code pre .ph{color:var(--amber);font-weight:700}
+  .code button{position:absolute;top:8px;right:8px;border:0;border-radius:8px;background:var(--amber);color:var(--ink);font:700 13px var(--f-body);padding:7px 12px;min-height:34px;cursor:pointer}
+  code.i{font:600 .92em ui-monospace,Menlo,Consolas,monospace;background:#F1F2F5;border-radius:6px;padding:1px 6px}
+  .tree{font:500 14.5px/1.9 ui-monospace,Menlo,Consolas,monospace;background:#F7F7F8;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0 14px;white-space:pre-wrap}
+  .tree b{color:var(--amber-dark)}
+  table.score{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:15.5px}
+  table.score th,table.score td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:top}
+  table.score th{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .dl{display:inline-block;background:var(--navy);color:#fff!important;text-decoration:none;border-radius:999px;padding:11px 18px;font-weight:700;margin:4px 0 6px}
+  .more{border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-top:36px;display:block;text-decoration:none;color:var(--ink)!important;font-weight:400!important}
+  .more:hover{border-color:var(--ink)}
+  .more b{display:block;font-size:1.1rem}
+  .src{font-size:14.5px;color:var(--ink-2)}
+  .src li{word-break:break-word}
+  [data-l]{display:none}
+  html[lang="en"] [data-l="en"],html[lang="ml"] [data-l="ml"]{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <a class="me" href="/">
+      <span class="avatar"><img src="/assets/sabith.jpg" alt="Sabith" width="52" height="52"></span>
+      <span><b>Sabith</b><span>Practical AI &amp; automation · Malayalam</span></span>
+    </a>
+    <div class="hright">
+      <nav aria-label="Sections">
+        <a href="/#free">Free resources</a>
+        <a href="/posts">Posts</a>
+        <a href="/#follow">Follow</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-set-lang="ml" aria-pressed="false">മലയാളം</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="guide">
+    <a class="back" href="/">← Home</a>
+
+<!-- ======================= ENGLISH ======================= -->
+<article data-l="en" lang="en">
+  <span class="tag">Free guide · EDIT</span>
+  <h1>Build your own <span class="hl">AI video editor</span> with Claude Code</h1>
+  <p class="sub">From an empty folder to a finished Reel</p>
+  <p class="lead">Lots of people now edit videos with Claude, but almost nobody explains the setup. Here is the whole workflow I use: one folder, five free tools, and three prompts you can copy and paste. You don't need to install anything by hand. Claude does it for you.</p>
+  <a class="dl" href="/assets/ai-video-editor-starter-kit.pdf" download>Download the PDF version</a>
+
+  <h2>Before you start</h2>
+  <ul>
+    <li>The <b>Claude desktop app</b>, with <b>Claude Code</b> opened inside it. Use the desktop app, not the browser.</li>
+    <li>A Claude plan that includes Claude Code (it may need a paid plan).</li>
+    <li><b>Node.js 22 or newer</b>, which HyperFrames needs. If you don't have it, Claude can install it in step 2.</li>
+    <li>Links to <b>3 to 5 Instagram videos</b> whose editing style you like, for step 3.</li>
+    <li><b>One raw video clip</b>, for step 4.</li>
+  </ul>
+
+  <div class="step">
+    <div class="top"><span class="num">1</span><h3>Set up your workspace</h3></div>
+    <ol>
+      <li>On your computer, create a folder called <b>AI Video Editor</b>.</li>
+      <li>Inside it, create three folders: <b>Raw Footage</b>, <b>References</b> and <b>Exports</b>. (In the reel I call the first one "Raw Files"; either name works, just use the same name in prompt 3.)</li>
+      <li>Open the Claude desktop app and start a new <b>Claude Code</b> chat.</li>
+      <li>Choose <b>Local</b>, then select the <b>AI Video Editor</b> folder. Now Claude can see your files.</li>
+    </ol>
+    <div class="tree"><b>AI Video Editor</b>
+├─ Raw Footage   your clips
+├─ References    style videos
+└─ Exports       final videos</div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">2</span><h3>Install the tools (prompt 1)</h3></div>
+    <p>Paste this into Claude Code. Claude installs and tests all five tools. When it asks for permission to run a command, read it and allow it. Wait until it says it's ready.</p>
+    <div class="code"><pre>I want you to be my video editor. Install these tools on my computer and test each one:
+1. Remotion: github.com/remotion-dev/remotion
+2. HyperFrames: github.com/heygen-com/hyperframes
+3. FFmpeg: github.com/FFmpeg/FFmpeg
+4. Whisper (whisper.cpp): github.com/ggml-org/whisper.cpp
+5. yt-dlp: github.com/yt-dlp/yt-dlp
+When everything works, tell me you are ready.</pre><button type="button">Copy</button></div>
+    <table class="score">
+      <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><b>Remotion</b></td><td>Builds videos from code: edits and motion graphics</td></tr>
+        <tr><td><b>HyperFrames</b></td><td>HeyGen's open-source tool that turns HTML into MP4, made for AI agents</td></tr>
+        <tr><td><b>FFmpeg</b></td><td>Cuts, converts and exports video and audio</td></tr>
+        <tr><td><b>Whisper</b></td><td>Turns speech into text, so Claude can make captions</td></tr>
+        <tr><td><b>yt-dlp</b></td><td>Downloads your reference videos</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">3</span><h3>Teach Claude your style (prompt 2)</h3></div>
+    <p>Claude knows how to edit, but it doesn't know your taste. Replace the three placeholders with links to videos whose editing you like (3 to 5 is best), then paste the prompt. Claude builds a <b>brand sheet</b> for you to review.</p>
+    <div class="code"><pre>Learn the editing style from these videos:
+<span class="ph">[PASTE INSTAGRAM LINK 1]</span>
+<span class="ph">[PASTE INSTAGRAM LINK 2]</span>
+<span class="ph">[PASTE INSTAGRAM LINK 3]</span>
+1. Download each one into my References folder.
+2. Study what they have in common: fonts, colors, caption style, cuts, zooms, pacing, motion graphics, music, and sound.
+3. Build me a brand sheet that I can review. Make it inspired by these videos, not a copy of them.
+Once I approve it, follow it every time you edit for me.</pre><button type="button">Copy</button></div>
+    <div class="box"><b>The most important line</b>"Make it inspired by these videos, not a copy of them." That is what makes your edits look like yours. Read the brand sheet before you approve it.</div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">4</span><h3>Film and edit (prompt 3)</h3></div>
+    <p>Film your video the way you normally do and put the raw file in the <b>Raw Footage</b> folder. Paste this prompt and replace <b>[FILE NAME]</b> with your file's name.</p>
+    <div class="code"><pre>Edit my new video into an Instagram Reel:
+<span class="ph">[FILE NAME]</span> in my Raw Footage folder
+1. Remove every pause longer than 0.1 seconds.
+2. Follow my approved brand sheet.
+3. Add captions, music, and motion graphics.
+4. Use anything useful from my References folder.
+Show me a storyboard to review first. After I approve it, export the final video to my Exports folder.</pre><button type="button">Copy</button></div>
+    <p>Claude cuts the dead air, adds captions and music, and shows you a storyboard first. Approve it and the finished video lands in <b>Exports</b>.</p>
+    <p>Not happy with something? Just tell Claude in plain words, like you'd tell a person: <i>"Make the hook bigger."</i> or <i>"Change the background."</i> Claude fixes it.</p>
+  </div>
+
+  <h2>Tips for better results</h2>
+  <ul>
+    <li>Pick 3 to 5 reference videos that share the same style.</li>
+    <li>Review the brand sheet and the storyboard before you approve them.</li>
+    <li>Ask for one change at a time, in plain words.</li>
+    <li>Keep clips in Raw Footage and finished videos in Exports, so Claude always knows where to look.</li>
+    <li>Only use music you're allowed to use (royalty-free or your own licence).</li>
+  </ul>
+
+  <h2>If something goes wrong</h2>
+  <table class="score">
+    <thead><tr><th>Problem</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td>Claude can't see your files</td><td>Start a new Claude Code chat, choose <b>Local</b>, and select the <b>AI Video Editor</b> folder itself, not a folder inside it.</td></tr>
+      <tr><td>A tool fails to install</td><td>Paste the error back into the chat and say "fix this". If it mentions Node.js, ask Claude to install Node.js 22 first.</td></tr>
+      <tr><td>Reference video won't download</td><td>Check the link opens in your browser. Private accounts can't be downloaded; pick a public video.</td></tr>
+      <tr><td>The edit doesn't feel like you</td><td>Ask Claude to update the brand sheet with one specific change, approve it, then edit again.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Tool links</h2>
+  <ul class="src">
+    <li>Remotion: <a href="https://github.com/remotion-dev/remotion" target="_blank" rel="noopener">github.com/remotion-dev/remotion</a></li>
+    <li>HyperFrames: <a href="https://github.com/heygen-com/hyperframes" target="_blank" rel="noopener">github.com/heygen-com/hyperframes</a></li>
+    <li>FFmpeg: <a href="https://github.com/FFmpeg/FFmpeg" target="_blank" rel="noopener">github.com/FFmpeg/FFmpeg</a> (a mirror; the official home is <a href="https://ffmpeg.org" target="_blank" rel="noopener">ffmpeg.org</a>)</li>
+    <li>Whisper (whisper.cpp): <a href="https://github.com/ggml-org/whisper.cpp" target="_blank" rel="noopener">github.com/ggml-org/whisper.cpp</a></li>
+    <li>yt-dlp: <a href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noopener">github.com/yt-dlp/yt-dlp</a></li>
+  </ul>
+  <p class="src">Each tool has its own licence; check it before using the tool for client work. Not affiliated with Anthropic or any of the tool makers.</p>
+
+  <a class="more" href="/skillspector"><span class="tag">Next guide · SCAN</span><b style="margin-top:10px">Scan any AI skill before you install it →</b>Free SkillSpector setup for Windows and Mac.</a>
+</article>
+
+<!-- ======================= MALAYALAM ======================= -->
+<article data-l="ml" lang="ml">
+  <span class="tag">Free guide · EDIT</span>
+  <h1>Claude Code വെച്ച് സ്വന്തം <span class="hl">AI video editor</span> ഉണ്ടാക്കാം</h1>
+  <p class="sub">ഒരു empty folder-ൽ നിന്ന് finished Reel വരെ</p>
+  <p class="lead">ഇപ്പോൾ എല്ലാവരും Claude വെച്ചാണ് videos edit ചെയ്യുന്നത്. പക്ഷേ അതിന്റെ setup വ്യക്തമായി ആരും പറയുന്നില്ല. ഞാൻ ഉപയോഗിക്കുന്ന മുഴുവൻ workflow ഇതാ: ഒരു folder, അഞ്ച് സൗജന്യ tools, copy-paste ചെയ്യാവുന്ന മൂന്ന് prompts. ഒന്നും നിങ്ങൾ സ്വയം install ചെയ്യേണ്ട. Claude അത് ചെയ്യും.</p>
+  <a class="dl" href="/assets/ai-video-editor-starter-kit.pdf" download>PDF version download ചെയ്യാം (English)</a>
+
+  <h2>തുടങ്ങുന്നതിന് മുൻപ്</h2>
+  <ul>
+    <li><b>Claude desktop app</b>, അതിനുള്ളിൽ <b>Claude Code</b> തുറന്നത്. Browser അല്ല, desktop app തന്നെ ഉപയോഗിക്കുക.</li>
+    <li>Claude Code ഉൾപ്പെടുന്ന ഒരു Claude plan (paid plan വേണ്ടിവരാം).</li>
+    <li><b>Node.js 22 അല്ലെങ്കിൽ പുതിയത്</b>. HyperFrames-ന് ഇത് വേണം. ഇല്ലെങ്കിൽ step 2-ൽ Claude install ചെയ്തുതരും.</li>
+    <li>നിങ്ങൾക്ക് ഇഷ്ടമുള്ള editing style ഉള്ള <b>3 മുതൽ 5 വരെ Instagram videos-ന്റെ links</b> (step 3-ന്).</li>
+    <li><b>ഒരു raw video clip</b> (step 4-ന്).</li>
+  </ul>
+
+  <div class="step">
+    <div class="top"><span class="num">1</span><h3>Workspace set up ചെയ്യുക</h3></div>
+    <ol>
+      <li>Computer-ൽ <b>AI Video Editor</b> എന്ന പേരിൽ ഒരു folder ഉണ്ടാക്കുക.</li>
+      <li>അതിനുള്ളിൽ മൂന്ന് folders ഉണ്ടാക്കുക: <b>Raw Footage</b>, <b>References</b>, <b>Exports</b>. (Reel-ൽ ആദ്യത്തേതിനെ "Raw Files" എന്നാണ് പറഞ്ഞത്. ഏത് പേരും കൊടുക്കാം, prompt 3-ലും അതേ പേര് ഉപയോഗിച്ചാൽ മതി.)</li>
+      <li>Claude desktop app തുറന്ന് പുതിയ ഒരു <b>Claude Code</b> chat തുടങ്ങുക.</li>
+      <li><b>Local</b> select ചെയ്ത്, നമ്മൾ ഉണ്ടാക്കിയ <b>AI Video Editor</b> folder select ചെയ്യുക. ഇപ്പോൾ Claude-ന് നിങ്ങളുടെ files കാണാം.</li>
+    </ol>
+    <div class="tree"><b>AI Video Editor</b>
+├─ Raw Footage   നിങ്ങളുടെ clips
+├─ References    style videos
+└─ Exports       final videos</div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">2</span><h3>Tools install ചെയ്യുക (prompt 1)</h3></div>
+    <p>ഇത് Claude Code-ൽ paste ചെയ്യുക. അഞ്ച് tools-ഉം Claude install ചെയ്ത് test ചെയ്യും. ഒരു command run ചെയ്യാൻ permission ചോദിച്ചാൽ, വായിച്ചുനോക്കി allow ചെയ്യുക. "ready" എന്ന് പറയുന്നതുവരെ കാത്തിരിക്കുക.</p>
+    <div class="code"><pre>I want you to be my video editor. Install these tools on my computer and test each one:
+1. Remotion: github.com/remotion-dev/remotion
+2. HyperFrames: github.com/heygen-com/hyperframes
+3. FFmpeg: github.com/FFmpeg/FFmpeg
+4. Whisper (whisper.cpp): github.com/ggml-org/whisper.cpp
+5. yt-dlp: github.com/yt-dlp/yt-dlp
+When everything works, tell me you are ready.</pre><button type="button">Copy</button></div>
+    <table class="score">
+      <thead><tr><th>Tool</th><th>എന്ത് ചെയ്യും</th></tr></thead>
+      <tbody>
+        <tr><td><b>Remotion</b></td><td>Code-ൽ നിന്ന് videos ഉണ്ടാക്കും: edits, motion graphics</td></tr>
+        <tr><td><b>HyperFrames</b></td><td>HTML-നെ MP4 ആക്കുന്ന HeyGen-ന്റെ open-source tool, AI agents-നുവേണ്ടി ഉണ്ടാക്കിയത്</td></tr>
+        <tr><td><b>FFmpeg</b></td><td>Video, audio cut ചെയ്യും, convert ചെയ്യും, export ചെയ്യും</td></tr>
+        <tr><td><b>Whisper</b></td><td>സംസാരം text ആക്കും, അതുവെച്ച് Claude captions ഉണ്ടാക്കും</td></tr>
+        <tr><td><b>yt-dlp</b></td><td>Reference videos download ചെയ്യും</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">3</span><h3>നിങ്ങളുടെ style Claude-നെ പഠിപ്പിക്കുക (prompt 2)</h3></div>
+    <p>Claude-ന് edit ചെയ്യാൻ അറിയാം, പക്ഷേ നിങ്ങളുടെ taste അറിയില്ല. നിങ്ങൾക്ക് ഇഷ്ടമുള്ള editing ഉള്ള videos-ന്റെ links (3 മുതൽ 5 വരെ) മൂന്ന് placeholders-ന് പകരം കൊടുത്ത് prompt paste ചെയ്യുക. Claude നിങ്ങൾക്ക് review ചെയ്യാൻ ഒരു <b>brand sheet</b> ഉണ്ടാക്കും.</p>
+    <div class="code"><pre>Learn the editing style from these videos:
+<span class="ph">[PASTE INSTAGRAM LINK 1]</span>
+<span class="ph">[PASTE INSTAGRAM LINK 2]</span>
+<span class="ph">[PASTE INSTAGRAM LINK 3]</span>
+1. Download each one into my References folder.
+2. Study what they have in common: fonts, colors, caption style, cuts, zooms, pacing, motion graphics, music, and sound.
+3. Build me a brand sheet that I can review. Make it inspired by these videos, not a copy of them.
+Once I approve it, follow it every time you edit for me.</pre><button type="button">Copy</button></div>
+    <div class="box"><b>ഏറ്റവും പ്രധാനപ്പെട്ട line</b>"Make it inspired by these videos, not a copy of them." Style copy ചെയ്യുകയല്ല, അതിൽ നിന്ന് inspired ആവുകയാണ് വേണ്ടത്. അതാണ് നിങ്ങളുടെ edit വ്യത്യസ്തമാക്കുന്നത്. Approve ചെയ്യുന്നതിന് മുൻപ് brand sheet വായിക്കുക.</div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">4</span><h3>Shoot ചെയ്യുക, edit ചെയ്യിക്കുക (prompt 3)</h3></div>
+    <p>സാധാരണപോലെ video shoot ചെയ്ത് raw file <b>Raw Footage</b> folder-ൽ ഇടുക. ഈ prompt paste ചെയ്ത് <b>[FILE NAME]</b>-ന് പകരം നിങ്ങളുടെ file-ന്റെ പേര് കൊടുക്കുക.</p>
+    <div class="code"><pre>Edit my new video into an Instagram Reel:
+<span class="ph">[FILE NAME]</span> in my Raw Footage folder
+1. Remove every pause longer than 0.1 seconds.
+2. Follow my approved brand sheet.
+3. Add captions, music, and motion graphics.
+4. Use anything useful from my References folder.
+Show me a storyboard to review first. After I approve it, export the final video to my Exports folder.</pre><button type="button">Copy</button></div>
+    <p>Claude dead air cut ചെയ്ത്, captions-ഉം music-ഉം add ചെയ്ത്, ആദ്യം ഒരു storyboard കാണിക്കും. അത് approve ചെയ്താൽ finished video <b>Exports</b>-ൽ വരും.</p>
+    <p>എന്തെങ്കിലും ശരിയല്ലെങ്കിൽ ഒരാളോട് പറയുന്നതുപോലെ സാധാരണ ഭാഷയിൽ Claude-നോട് പറഞ്ഞാൽ മതി: <i>"ഈ hook ഒന്ന് വലുതാക്കൂ"</i> അല്ലെങ്കിൽ <i>"background ഒന്ന് മാറ്റൂ"</i>. Claude അത് ശരിയാക്കും.</p>
+  </div>
+
+  <h2>കൂടുതൽ നല്ല result-ന്</h2>
+  <ul>
+    <li>ഒരേ style ഉള്ള 3 മുതൽ 5 വരെ reference videos തിരഞ്ഞെടുക്കുക.</li>
+    <li>Brand sheet-ഉം storyboard-ഉം approve ചെയ്യുന്നതിന് മുൻപ് review ചെയ്യുക.</li>
+    <li>ഒരു സമയം ഒരു മാറ്റം മാത്രം, സാധാരണ ഭാഷയിൽ ചോദിക്കുക.</li>
+    <li>Clips Raw Footage-ലും finished videos Exports-ലും വയ്ക്കുക. അപ്പോൾ എവിടെ നോക്കണമെന്ന് Claude-ന് എപ്പോഴും അറിയാം.</li>
+    <li>ഉപയോഗിക്കാൻ അനുവാദമുള്ള music മാത്രം ഉപയോഗിക്കുക (royalty-free അല്ലെങ്കിൽ നിങ്ങളുടെ സ്വന്തം licence).</li>
+  </ul>
+
+  <h2>എന്തെങ്കിലും പ്രശ്നം വന്നാൽ</h2>
+  <table class="score">
+    <thead><tr><th>പ്രശ്നം</th><th>പരിഹാരം</th></tr></thead>
+    <tbody>
+      <tr><td>Claude-ന് files കാണാൻ പറ്റുന്നില്ല</td><td>പുതിയ Claude Code chat തുടങ്ങി <b>Local</b> select ചെയ്ത്, <b>AI Video Editor</b> folder തന്നെ select ചെയ്യുക (അതിനുള്ളിലെ folder അല്ല).</td></tr>
+      <tr><td>ഒരു tool install ആകുന്നില്ല</td><td>Error അതേപടി chat-ൽ paste ചെയ്ത് "fix this" എന്ന് പറയുക. Node.js എന്ന് കണ്ടാൽ ആദ്യം Node.js 22 install ചെയ്യാൻ Claude-നോട് പറയുക.</td></tr>
+      <tr><td>Reference video download ആകുന്നില്ല</td><td>Link browser-ൽ തുറക്കുന്നുണ്ടോ എന്ന് നോക്കുക. Private accounts-ലെ videos download ചെയ്യാൻ പറ്റില്ല, public video എടുക്കുക.</td></tr>
+      <tr><td>Edit നിങ്ങളുടെ style പോലെ തോന്നുന്നില്ല</td><td>Brand sheet-ൽ ഒരു കൃത്യമായ മാറ്റം വരുത്താൻ Claude-നോട് പറയുക, approve ചെയ്യുക, എന്നിട്ട് വീണ്ടും edit ചെയ്യിക്കുക.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Tool links</h2>
+  <ul class="src">
+    <li>Remotion: <a href="https://github.com/remotion-dev/remotion" target="_blank" rel="noopener">github.com/remotion-dev/remotion</a></li>
+    <li>HyperFrames: <a href="https://github.com/heygen-com/hyperframes" target="_blank" rel="noopener">github.com/heygen-com/hyperframes</a></li>
+    <li>FFmpeg: <a href="https://github.com/FFmpeg/FFmpeg" target="_blank" rel="noopener">github.com/FFmpeg/FFmpeg</a> (mirror ആണ്; official site <a href="https://ffmpeg.org" target="_blank" rel="noopener">ffmpeg.org</a>)</li>
+    <li>Whisper (whisper.cpp): <a href="https://github.com/ggml-org/whisper.cpp" target="_blank" rel="noopener">github.com/ggml-org/whisper.cpp</a></li>
+    <li>yt-dlp: <a href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noopener">github.com/yt-dlp/yt-dlp</a></li>
+  </ul>
+  <p class="src">ഓരോ tool-നും അതിന്റേതായ licence ഉണ്ട്. Client work-ന് ഉപയോഗിക്കുന്നതിന് മുൻപ് അത് check ചെയ്യുക. Anthropic-മായോ tool makers-മായോ ബന്ധമില്ല.</p>
+
+  <a class="more" href="/skillspector?lang=ml"><span class="tag">അടുത്ത guide · SCAN</span><b style="margin-top:10px">ഏത് AI skill-ഉം install ചെയ്യുന്നതിന് മുൻപ് scan ചെയ്യൂ →</b>Windows-ലും Mac-ലും SkillSpector set up ചെയ്യാനുള്ള സൗജന്യ guide.</a>
+</article>
+
+  </main>
+
+  <footer>
+    <span>© 2026 Sabith</span>
+    <span>Kerala, India</span>
+  </footer>
+</div>
+<script>
+/* Language: same choice as the rest of the site (localStorage "sb_lang", or ?lang=ml / ?lang=en) */
+(function () {
+  var get = function () { try { return JSON.parse(localStorage.getItem("sb_lang")); } catch (e) { return null; } };
+  var set = function (v) { try { localStorage.setItem("sb_lang", JSON.stringify(v)); } catch (e) {} };
+  var q = new URLSearchParams(location.search).get("lang");
+  var lang = (q === "ml" || q === "en") ? q : (get() === "ml" ? "ml" : "en");
+  function apply(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    document.querySelectorAll("[data-set-lang]").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.setLang === l ? "true" : "false"); });
+  }
+  apply(lang);
+  if (q) set(q);
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-set-lang]");
+    if (b) { set(b.dataset.setLang); apply(b.dataset.setLang); return; }
+    var c = e.target.closest(".code button");
+    if (c) {
+      var text = c.parentNode.querySelector("pre").innerText;
+      var done = function () { var t = c.textContent; c.textContent = "Copied ✓"; setTimeout(function () { c.textContent = t; }, 1500); };
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, function () {});
+      else { var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (x) {} ta.remove(); }
+    }
+  });
+})();
+</script>
+</body>
+</html>
