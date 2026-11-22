@@ -120,3 +120,63 @@ a.fl:hover{border-color:var(--ink)}
 
 footer{border-top:1px solid var(--line);padding-block:28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:14px}
 .post .cover{display:block;width:100%;max-width:100%;height:auto;border-radius:16px;margin:4px 0 22px;background:var(--amber-soft)}
+
+/* ===== home page v2: header + guide list + follow buttons ===== */
+.home header{padding-block:16px 6px}
+.hero-s{display:grid;gap:12px;padding-block:22px 8px;max-width:720px}
+.hero-s h1{font-size:clamp(2rem,6.4vw,3.4rem);font-weight:800;letter-spacing:-.015em}
+.hero-s .sub{font-size:1.12rem;color:var(--ink-2)}
+.home section{border-top:0;padding-block:26px 10px}
+.ghead{display:grid;gap:4px;margin-bottom:16px}
+.ghead h2{font-size:clamp(1.6rem,4.6vw,2.2rem);font-weight:800}
+.ghead p{color:var(--ink-2)}
+.search{display:flex;align-items:center;gap:10px;border:2px solid var(--ink);border-radius:999px;padding:0 16px;margin-bottom:16px;color:var(--muted);background:#fff;max-width:520px}
+.search:focus-within{outline:3px solid var(--amber);outline-offset:2px}
+.search input{border:0;outline:0;flex:1;min-width:0;font:500 16px var(--f-body);padding:13px 0;background:transparent;color:var(--ink)}
+.glist{display:grid;gap:12px}
+.g{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:18px;padding:18px 18px 18px 20px;text-decoration:none;color:var(--ink);background:#fff;transition:border-color .15s,box-shadow .15s,transform .15s}
+a.g:hover{border-color:var(--ink);box-shadow:0 6px 22px rgba(0,0,0,.07);transform:translateY(-1px)}
+.gtext{flex:1;min-width:0;display:grid;gap:6px}
+.gtext h3{font-size:1.25rem;font-weight:800;line-height:1.25}
+.gtext p{color:var(--ink-2);font-size:.98rem;line-height:1.5}
+.gmeta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.gdate{font-size:13px;color:var(--muted)}
+.ggo{flex:none;width:44px;height:44px;border-radius:50%;background:var(--amber);color:var(--ink);display:flex;align-items:center;justify-content:center}
+.g.soon{background:#FAFAF8;border-style:dashed}
+.g.soon h3,.g.soon p{color:var(--muted)}
+.gsoon{flex:none;font:700 12px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.gnone{color:var(--ink-2);background:var(--amber-soft);border-radius:14px;padding:14px 16px}
+.home .posts{display:grid;gap:12px}
+
+/* follow buttons */
+footer.sfoot{display:block;border-top:1px solid var(--line);margin-top:34px;padding-block:30px 26px;text-align:center}
+.sfoot h2{font-size:1.5rem;font-weight:800;color:var(--ink)}
+.sfoot>p{color:var(--ink-2);font-size:15px;margin-top:4px}
+.social{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:20px auto 24px;max-width:800px}
+.sbtn{width:86px;display:grid;justify-items:center;gap:5px;padding:12px 4px 10px;border-radius:18px;font:700 13px var(--f-body);text-decoration:none}
+.sbtn svg{width:30px;height:30px}
+.sbtn small{font:600 10.5px var(--f-body);letter-spacing:.06em;text-transform:uppercase}
+.sbtn.on{color:var(--ink);background:#fff;border:2px solid var(--amber);box-shadow:0 0 0 4px var(--amber-soft),0 0 22px rgba(245,179,1,.55);animation:glow 2.6s ease-in-out infinite}
+.sbtn.on:hover{transform:translateY(-2px);box-shadow:0 0 0 4px var(--amber-soft),0 0 30px rgba(245,179,1,.8)}
+.sbtn.off{color:#A3A3A3;background:#F4F4F2;border:2px solid #ECECEA;cursor:default}
+@keyframes glow{50%{box-shadow:0 0 0 4px var(--amber-soft),0 0 34px rgba(245,179,1,.85)}}
+@media (prefers-reduced-motion:reduce){.sbtn.on{animation:none}.g{transition:none}}
+.fline{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:18px}
+@media (max-width:420px){.sbtn{width:74px}.g{padding:16px}.ggo{width:40px;height:40px}}
+
+/* about me */
+.aboutcard{display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center;background:var(--amber-soft);border-radius:22px;padding:24px}
+.aphoto{width:120px;height:120px;border-radius:50%;border:4px solid var(--amber);padding:3px;background:#fff}
+.aphoto img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.atext{display:grid;gap:8px}
+.atext h2{font-size:clamp(1.5rem,4.4vw,2rem);font-weight:800}
+.atext p{color:var(--ink-2)}
+@media (max-width:560px){.aboutcard{grid-template-columns:1fr;justify-items:center;text-align:center;padding:24px 20px}.atext .tag{justify-self:center}}
+
+/* smaller language switch; on the home page it stays in the top-right corner */
+.lang{border-width:1.5px}
+.lang button{font-size:12px;padding:4px 10px;min-height:30px;line-height:1}
+.home header{flex-wrap:nowrap;align-items:flex-start}
+.home .me{min-width:0;flex:1}
+.home .me>span:last-child{min-width:0}
+.home .lang{flex:none;margin-top:4px}

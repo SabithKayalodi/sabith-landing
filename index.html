@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sabith | Practical AI & Automation in Malayalam</title>
-<meta name="description" content="Practical AI and automation workflows in Malayalam and English. Free PDFs and step-by-step workflows to save hours at work and in business, no coding.">
+<meta name="description" content="Free step-by-step AI and automation guides from my reels, in Malayalam and English. No coding.">
 <meta property="og:title" content="Sabith | Practical AI & Automation in Malayalam">
-<meta property="og:description" content="Free AI shortcuts, PDFs and automation workflows. No coding.">
+<meta property="og:description" content="Free step-by-step AI guides from my reels. No coding.">
 <meta property="og:image" content="/assets/og.jpg">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
@@ -18,97 +18,67 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@600;700;800&family=Figtree:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="/assets/style.css">
 </head>
-<body>
+<body class="home">
 <div class="wrap">
 
   <header>
     <a class="me" href="/">
-      <span class="avatar"><img src="/assets/sabith.jpg" alt="Sabith" width="52" height="52"></span>
-      <span><b>Sabith</b><span data-i18n="tagline">Practical AI &amp; automation · Malayalam</span></span>
+      <span class="avatar"><img src="/assets/sabith.jpg" alt="" width="52" height="52"></span>
+      <span><b data-i18n="name">Sabith</b><span data-i18n="tagline">Practical AI &amp; automation · Malayalam</span></span>
     </a>
-    <div class="hright">
-      <nav aria-label="Sections">
-        <a href="#free" data-i18n="navFree">Free resources</a>
-        <a href="#posts-section" data-i18n="navPosts">Posts</a>
-        <a href="#series" data-i18n="navSeries">Series</a>
-        <a href="#follow" data-i18n="navFollow">Follow</a>
-      </nav>
-      <div class="lang" role="group" aria-label="Language">
-        <button type="button" data-lang="en" aria-pressed="true">EN</button>
-        <button type="button" data-lang="ml" aria-pressed="false">മലയാളം</button>
-      </div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="ml" aria-pressed="false">മലയാളം</button>
     </div>
   </header>
 
   <main>
-    <div class="hero">
+    <div class="hero-s" data-section="showHero">
       <span class="tag" data-i18n="tag">Free · No coding</span>
-      <h1 data-i18n-html="headline">Practical AI &amp; <span class="hl">automation workflows</span></h1>
-      <p class="sub" data-i18n="sub">Save hours at work and in business.</p>
-      <p class="lead" data-i18n="lead">Every PDF and workflow from my reels, in one place. Download, copy and use it today.</p>
-      <div class="ctas">
-        <a class="btn btn-amber" href="#free" data-i18n="btnFree">Get the free resources</a>
-        <a class="btn btn-line" href="#follow" data-i18n="btnFollow">Follow for weekly shortcuts</a>
-      </div>
+      <h1 data-i18n-hl="headline">Practical AI &amp; <span class="hl">automation workflows</span></h1>
+      <p class="sub" data-i18n="sub">Every guide from my reels, in one place.</p>
     </div>
 
-    <section id="free">
-      <div class="head">
-        <span class="tag" data-i18n="freeTag">Free resources</span>
-        <h2 data-i18n="freeHead">Saw a reel? Find its resource here</h2>
-        <p data-i18n="freeLine">Each one matches the keyword I mention in the reel. No sign-up needed.</p>
+    <section id="free" class="guides-sec">
+      <div class="ghead">
+        <h2 data-i18n="guidesHead">Free guides</h2>
+        <p data-i18n="guidesLine">Tap a guide to open it. New ones show up here first.</p>
       </div>
-      <div class="grid" id="grid"></div>
+      <label class="search" data-section="showSearch">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" id="gsearch" autocomplete="off" enterkeyhint="search" data-i18n-ph="searchPh" placeholder="Type a keyword from a reel">
+      </label>
+      <div class="glist" id="guides" aria-live="polite"></div>
     </section>
 
-    <section id="posts-section">
-      <div class="head">
-        <span class="tag" data-i18n="postsTag">Posts</span>
-        <h2 data-i18n="postsHead">Latest posts</h2>
-      </div>
+    <section id="posts-section" data-section="showPosts" hidden>
+      <div class="ghead"><h2 data-i18n="postsHead">Latest posts</h2></div>
       <div class="posts" id="posts" data-limit="3"></div>
       <a class="more" id="more-posts" href="/posts" data-i18n="allPosts" hidden>See all posts →</a>
     </section>
 
-    <section id="series">
-      <div class="head">
-        <span class="tag" data-i18n="seriesTag">Series</span>
-        <h2 data-i18n="seriesHead">Two series, every week</h2>
-      </div>
-      <div class="series">
-        <div class="s">
-          <h3>AI Shortcut #</h3>
-          <p data-i18n="s1">One tool or trick that saves you time, shown start to finish in under a minute, with the free limit and price.</p>
-          <small data-i18n="s1small">3 new shortcuts every week</small>
-        </div>
-        <div class="s">
-          <h3>Automate This</h3>
-          <p data-i18n="s2">One real workflow you can copy, like WhatsApp auto-replies or an auto-filled lead sheet, with a free step-by-step guide here.</p>
-          <small data-i18n="s2small">1 new workflow every week</small>
+    <section id="about" data-section="showAbout">
+      <div class="aboutcard">
+        <span class="aphoto"><img src="/assets/sabith.jpg" alt="" width="120" height="120" loading="lazy"></span>
+        <div class="atext">
+          <span class="tag" data-i18n="aboutTag">About me</span>
+          <h2 data-i18n="aboutHead">Hi, I'm Sabith</h2>
+          <p data-i18n="aboutText">I test AI tools and automations on real work every week, and share only what actually saves time, in simple Malayalam. No coding, no hype.</p>
         </div>
       </div>
-    </section>
-
-    <section id="about">
-      <div class="head">
-        <span class="tag" data-i18n="aboutTag">About</span>
-        <h2 data-i18n="aboutHead">Hi, I'm Sabith</h2>
-        <p data-i18n="aboutText">I test AI tools and automations on real work every week, and share only what actually saves time, in simple Malayalam. No coding, no hype.</p>
-      </div>
-    </section>
-
-    <section id="follow">
-      <div class="head">
-        <span class="tag" data-i18n="followTag">Follow</span>
-        <h2 data-i18n="followHead">New shortcuts every week</h2>
-      </div>
-      <div class="follow" id="follow-links"></div>
     </section>
   </main>
 
-  <footer>
-    <span>© 2026 Sabith</span>
-    <span data-i18n="footer">Kerala, India</span>
+  <footer id="follow" class="sfoot">
+    <div id="followbox">
+      <h2 data-i18n="followHead">Follow for new guides</h2>
+      <p data-i18n="followLine">New guides every week.</p>
+      <div class="social" id="social"></div>
+    </div>
+    <div class="fline">
+      <span>© <span id="year">2026</span> <span data-i18n="name">Sabith</span></span>
+      <span data-i18n="footer">Kerala, India</span>
+    </div>
   </footer>
 </div>
 <script src="/assets/site.js"></script>

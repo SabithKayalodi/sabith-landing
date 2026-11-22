@@ -1,0 +1,22 @@
+[
+  {
+    "keyword": "EDIT",
+    "format": "Guide",
+    "date": "2026-11-22",
+    "link": "/ai-video-editor",
+    "title": "Build your own AI video editor with Claude Code",
+    "title_ml": "Claude Code വെച്ച് സ്വന്തം AI video editor ഉണ്ടാക്കാം",
+    "description": "4 steps, 5 free tools and 3 copy-paste prompts. From an empty folder to a finished Reel.",
+    "description_ml": "4 steps, 5 സൗജന്യ tools, copy-paste ചെയ്യാവുന്ന 3 prompts. Empty folder-ൽ നിന്ന് finished Reel വരെ."
+  },
+  {
+    "keyword": "SCAN",
+    "format": "Guide",
+    "date": "2026-11-21",
+    "link": "/skillspector",
+    "title": "Scan any AI skill before you install it",
+    "title_ml": "ഏത് AI skill-ഉം install ചെയ്യുന്നതിന് മുൻപ് scan ചെയ്യൂ",
+    "description": "Free SkillSpector setup for Windows and Mac, plus my 3 checks before installing any skill.",
+    "description_ml": "Windows-ലും Mac-ലും SkillSpector setup, ഒപ്പം ഏത് skill install ചെയ്യുന്നതിന് മുൻപും ഞാൻ ചെയ്യുന്ന 3 checks."
+  }
+]

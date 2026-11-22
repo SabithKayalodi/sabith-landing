@@ -27,17 +27,21 @@ const FALLBACK = {
       body_en: "Customers message at night or when you're busy, and a late reply can lose the order. WhatsApp Business has free tools that reply for you.\n\n## Set it up in 5 minutes\n- Open WhatsApp Business → Settings → Business tools\n- Greeting message: welcomes new customers automatically\n- Away message: replies when you're closed or busy\n- Quick replies: save answers to common questions, then type / to use them\n\n## Tip\nKeep messages short, and add your opening hours and a price list link.",
       body_ml: "രാത്രിയിലോ തിരക്കുള്ളപ്പോഴോ customers message ചെയ്യും. Reply വൈകിയാൽ order നഷ്ടപ്പെടാം. WhatsApp Business-ൽ നിങ്ങൾക്കുവേണ്ടി reply ചെയ്യുന്ന സൗജന്യ tools ഉണ്ട്.\n\n## 5 മിനിറ്റിൽ set up ചെയ്യാം\n- WhatsApp Business തുറക്കുക → Settings → Business tools\n- Greeting message: പുതിയ customers-നെ automatic ആയി സ്വാഗതം ചെയ്യും\n- Away message: കട അടച്ചിരിക്കുമ്പോഴോ തിരക്കിലായിരിക്കുമ്പോഴോ reply ചെയ്യും\n- Quick replies: സാധാരണ ചോദ്യങ്ങൾക്കുള്ള മറുപടികൾ save ചെയ്യുക, പിന്നെ / type ചെയ്ത് ഉപയോഗിക്കാം\n\n## ഒരു tip\nMessage ചെറുതാക്കുക, കട തുറക്കുന്ന സമയവും price list link-ഉം ചേർക്കുക." }
   ],
-  links: { instagram: "", youtube: "", whatsappChannel: "", linkedin: "" }
+  links: {}
 };
 
 /* All page text in both languages */
 const STRINGS = {
   en: {
+    name: "Sabith",
     tagline: "Practical AI & automation · Malayalam",
+    guidesHead: "Free guides", guidesLine: "Tap a guide to open it. New ones show up here first.",
+    searchPh: "Type a keyword from a reel", noMatch: "No guide with that keyword yet. Check the reel caption, or follow below to get it first.",
+    followLine: "New guides every week.", open: "Open", soonShort: "Soon",
     navFree: "Free resources", navPosts: "Posts", navSeries: "Series", navFollow: "Follow",
     tag: "Free · No coding",
-    headline: 'Practical AI &amp; <span class="hl">automation workflows</span>',
-    sub: "Save hours at work and in business.",
+    headline: "Practical AI & *automation workflows*",
+    sub: "Every guide from my reels, in one place.",
     lead: "Every PDF and workflow from my reels, in one place. Download, copy and use it today.",
     btnFree: "Get the free resources", btnFollow: "Follow for weekly shortcuts",
     freeTag: "Free resources", freeHead: "Saw a reel? Find its resource here",
@@ -51,9 +55,9 @@ const STRINGS = {
     s1small: "3 new shortcuts every week",
     s2: "One real workflow you can copy, like WhatsApp auto-replies or an auto-filled lead sheet, with a free step-by-step guide here.",
     s2small: "1 new workflow every week",
-    aboutTag: "About", aboutHead: "Hi, I'm Sabith",
+    aboutTag: "About me", aboutHead: "Hi, I'm Sabith",
     aboutText: "I test AI tools and automations on real work every week, and share only what actually saves time, in simple Malayalam. No coding, no hype.",
-    followTag: "Follow", followHead: "New shortcuts every week",
+    followTag: "Follow", followHead: "Follow for new guides",
     fInsta: "AI shortcuts & workflows", fYt: "Full tutorials", fWa: "New workflow alerts", fLi: "Lessons in English", linkSoon: "link soon",
     loading: "Loading…",
     back: "← Home", readIn: "മലയാളത്തിൽ വായിക്കൂ", watch: "Watch the reel",
@@ -61,11 +65,15 @@ const STRINGS = {
     noMl: "", footer: "Kerala, India"
   },
   ml: {
+    name: "Sabith",
     tagline: "പ്രായോഗിക AI & automation · മലയാളം",
+    guidesHead: "സൗജന്യ guides", guidesLine: "ഒരു guide തുറക്കാൻ അതിൽ tap ചെയ്യൂ. പുതിയവ ആദ്യം ഇവിടെ വരും.",
+    searchPh: "Reel-ലെ keyword type ചെയ്യൂ", noMatch: "ആ keyword-ൽ ഇതുവരെ guide ഇല്ല. Reel caption നോക്കൂ, അല്ലെങ്കിൽ താഴെ follow ചെയ്ത് ആദ്യം അറിയൂ.",
+    followLine: "എല്ലാ ആഴ്ചയും പുതിയ guides.", open: "തുറക്കൂ", soonShort: "ഉടൻ",
     navFree: "സൗജന്യ resources", navPosts: "Posts", navSeries: "സീരീസ്", navFollow: "ഫോളോ",
     tag: "സൗജന്യം · കോഡിംഗ് വേണ്ട",
-    headline: 'പ്രായോഗിക AI-യും <span class="hl">automation workflows-ഉം</span>',
-    sub: "ജോലിയിലും ബിസിനസ്സിലും മണിക്കൂറുകൾ ലാഭിക്കാം.",
+    headline: "പ്രായോഗിക AI-യും *automation workflows-ഉം*",
+    sub: "എന്റെ reels-ലെ എല്ലാ guides-ഉം ഒരിടത്ത്.",
     lead: "എന്റെ reels-ലെ എല്ലാ PDF-കളും workflows-ഉം ഒരിടത്ത്. ഇന്നുതന്നെ download ചെയ്ത് ഉപയോഗിക്കൂ.",
     btnFree: "സൗജന്യ resources നേടൂ", btnFollow: "ആഴ്ചതോറുമുള്ള shortcuts-ന് follow ചെയ്യൂ",
     freeTag: "സൗജന്യ resources", freeHead: "Reel കണ്ടോ? അതിന്റെ resource ഇവിടെയുണ്ട്",
@@ -79,9 +87,9 @@ const STRINGS = {
     s1small: "ആഴ്ചയിൽ 3 പുതിയ shortcuts",
     s2: "WhatsApp auto-reply പോലുള്ള, നിങ്ങൾക്ക് copy ചെയ്യാവുന്ന ഒരു യഥാർത്ഥ workflow, സൗജന്യ step-by-step guide സഹിതം.",
     s2small: "ആഴ്ചയിൽ 1 പുതിയ workflow",
-    aboutTag: "About", aboutHead: "ഹായ്, ഞാൻ സബിത്ത്",
+    aboutTag: "എന്നെക്കുറിച്ച്", aboutHead: "ഹായ്, ഞാൻ സബിത്ത്",
     aboutText: "എല്ലാ ആഴ്ചയും AI tools-ഉം automations-ഉം യഥാർത്ഥ ജോലിയിൽ പരീക്ഷിച്ച്, ശരിക്കും സമയം ലാഭിക്കുന്നവ മാത്രം ലളിതമായ മലയാളത്തിൽ പങ്കുവെക്കുന്നു. കോഡിംഗ് വേണ്ട, hype ഇല്ല.",
-    followTag: "ഫോളോ", followHead: "എല്ലാ ആഴ്ചയും പുതിയ shortcuts",
+    followTag: "ഫോളോ", followHead: "പുതിയ guides-ന് follow ചെയ്യൂ",
     fInsta: "AI shortcuts & workflows", fYt: "മുഴുവൻ tutorials", fWa: "പുതിയ workflow alerts", fLi: "English-ൽ lessons", linkSoon: "link ഉടൻ",
     loading: "ലോഡ് ചെയ്യുന്നു…",
     back: "← ഹോം", readIn: "Read in English", watch: "Reel കാണൂ",
@@ -106,6 +114,12 @@ let LANG = (() => {
   if (q === "ml" || q === "en") { store.set("sb_lang", q); return q; }
   return store.get("sb_lang") === "ml" ? "ml" : "en";
 })();
+/* "*words*" in a setting = amber highlight */
+const hl = s => esc(s).replace(/\*([^*]+)\*/g, '<span class="hl">$1</span>');
+/* Home page sections switched on/off in admin (Home page tab) */
+const SECTION_DEFAULT = { showHero: true, showSearch: true, showPosts: false, showAbout: true };
+const SETTINGS = {};
+const sectionOn = k => { const v = SETTINGS[k] && SETTINGS[k].en; return v ? yes(v) : !!SECTION_DEFAULT[k]; };
 const t = k => (STRINGS[LANG] && STRINGS[LANG][k]) ?? STRINGS.en[k] ?? "";
 const pick = (r, base) => (LANG === "ml" && r[base + "_ml"]) ? r[base + "_ml"] : (r[base + "_en"] ?? r[base] ?? "");
 
@@ -113,6 +127,9 @@ function applyStrings() {
   document.documentElement.lang = LANG;
   document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll("[data-i18n-hl]").forEach(el => { el.innerHTML = hl(t(el.dataset.i18nHl)); });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+  document.querySelectorAll("[data-section]").forEach(el => { el.hidden = !sectionOn(el.dataset.section); });
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === LANG ? "true" : "false"));
 }
 function setLang(l) { LANG = l; store.set("sb_lang", l); renderAll(); }
@@ -133,15 +150,19 @@ async function fetchData() {
 }
 function applySettings(settings) {
   Object.entries(settings || {}).forEach(([k, v]) => {
-    if (!v || k === "headline") return;
+    if (!v) return;
+    SETTINGS[k] = v;
+    if (/^show[A-Z]/.test(k) || k === "hideGuides") return;
+    if (k === "headline" && /<span/.test(v.en || "")) return;
     if (v.en) STRINGS.en[k] = v.en;
     if (v.ml) STRINGS.ml[k] = v.ml;
   });
 }
 
 /* ---------- state + renderers ---------- */
-const state = { resources: null, posts: null, links: null };
-const LINK_KEY = { instagram: "instagram", youtube: "youtube", whatsapp: "whatsappChannel", "whatsapp channel": "whatsappChannel", linkedin: "linkedin" };
+const state = { resources: null, posts: null, links: null, guides: null };
+const LINK_KEY = { instagram: "instagram", youtube: "youtube", whatsapp: "whatsappChannel", "whatsapp channel": "whatsappChannel", linkedin: "linkedin",
+  x: "x", twitter: "x", "x (twitter)": "x", facebook: "facebook", threads: "threads", telegram: "telegram" };
 const toLinks = rows => Array.isArray(rows)
   ? rows.reduce((m, r) => { const k = LINK_KEY[(r.platform || "").toLowerCase()]; if (k) m[k] = r.link; return m; }, { ...FALLBACK.links })
   : rows;
@@ -236,7 +257,73 @@ function renderPost() {
     <div class="related"><a class="btn btn-line" href="/#follow">${esc(t("btnFollow"))}</a></div>`;
 }
 
-function renderAll() { applyStrings(); renderResources(); renderPosts(); renderLinks(); renderPost(); }
+/* ---------- home: guide list ----------
+   Pages Claude builds are listed in /guides.json and appear here automatically.
+   Admin → Resources can hide one, change its text, or add your own items (e.g. a Drive PDF). */
+const kwOf = r => String(r.keyword || "").trim().toUpperCase();
+function mergedGuides() {
+  const hide = String((SETTINGS.hideGuides && SETTINGS.hideGuides.en) || "").toUpperCase().split(/[\s,]+/).filter(Boolean);
+  const res = (state.resources || []).filter(visible);
+  const used = new Set();
+  const list = (state.guides || []).map((g, i) => {
+    const o = res.find(r => kwOf(r) && kwOf(r) === kwOf(g));
+    if (o) used.add(o);
+    const m = { ...g, _i: i };
+    if (o) ["format", "title", "title_ml", "description", "description_ml", "link", "new"].forEach(k => { if (String(o[k] || "").trim()) m[k] = o[k]; });
+    return m;
+  }).filter(g => !hide.includes(kwOf(g)));
+  const own = res.filter(r => !used.has(r)).map((r, i) => ({ ...r, _i: 1000 + i }));
+  return list.concat(own).sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")) || a._i - b._i);
+}
+const isNew = g => yes(g.new) || (!!g.date && (Date.now() - new Date(g.date + "T00:00:00")) / 864e5 < 14);
+const GO = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+function guideRow(g) {
+  const link = String(g.link || "").trim();
+  const href = /^\/[^/]/.test(link) ? link + (LANG === "ml" ? "?lang=ml" : "") : safeUrl(link);
+  const ext = /^https?:/i.test(href) ? ' target="_blank" rel="noopener"' : "";
+  const meta = '<div class="gmeta">' + (kwOf(g) ? '<span class="kw">' + esc(kwOf(g)) + '</span>' : "") +
+    (g.format ? '<span class="fmt">' + esc(g.format) + '</span>' : "") +
+    (href && isNew(g) ? '<span class="new">' + esc(t("newLabel")) + '</span>' : "") +
+    (g.date ? '<span class="gdate">' + fmtDate(g.date) + '</span>' : "") + '</div>';
+  const desc = pick(g, "description");
+  const body = meta + '<h3>' + esc(pick(g, "title")) + '</h3>' + (desc ? '<p>' + esc(desc) + '</p>' : "");
+  return href
+    ? '<a class="g" href="' + esc(href) + '"' + ext + '><div class="gtext">' + body + '</div><span class="ggo" aria-hidden="true">' + GO + '</span></a>'
+    : '<div class="g soon"><div class="gtext">' + body + '</div><span class="gsoon">' + esc(t("soon")) + '</span></div>';
+}
+function renderGuides() {
+  const el = document.getElementById("guides"); if (!el) return;
+  if (state.guides === null && state.resources === null) { el.innerHTML = '<p class="meta">' + esc(t("loading")) + '</p>'; return; }
+  const q = ((document.getElementById("gsearch") || {}).value || "").trim().toLowerCase();
+  let list = mergedGuides();
+  if (q) list = list.filter(g => [kwOf(g), g.title, g.title_ml, g.description, g.description_ml].join(" ").toLowerCase().includes(q));
+  el.innerHTML = list.length ? list.map(guideRow).join("") : '<p class="gnone">' + esc(t("noMatch")) + '</p>';
+}
+document.addEventListener("input", e => { if (e.target && e.target.id === "gsearch") renderGuides(); });
+
+/* ---------- home: follow buttons (live link = glowing, empty = grey) ---------- */
+const ICONS = {
+  instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/>',
+  youtube: '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/>',
+  x: '<path d="M4 4l16 16M20 4L4 20"/>',
+  whatsappChannel: '<path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/><path d="M9 9.5c.3 2.2 2.3 4.2 4.5 4.5l1-1.2 1.8.8"/>',
+  linkedin: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V17M12 17v-3.6a2.3 2.3 0 0 1 4.6 0V17M12 10.5V17"/><circle cx="8" cy="7.4" r=".6" fill="currentColor"/>',
+  facebook: '<path d="M14.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.6 1.6-1.6h1.6V4.3a20 20 0 0 0-2.4-.1c-2.4 0-4 1.4-4 4.1v2.2H8.6v3h2.7V21"/>',
+  threads: '<circle cx="12" cy="12" r="3.6"/><path d="M15.6 12v1.4a2.6 2.6 0 0 0 5.2 0V12a8.8 8.8 0 1 0-3.4 6.9"/>',
+  telegram: '<path d="M21 4L3 11.2l6 2.2 2.2 6.1 3.3-4 4.6 3.5z"/><path d="M9 13.4L21 4"/>'
+};
+const PLATFORMS = [["instagram", "Instagram"], ["youtube", "YouTube"], ["x", "X"], ["whatsappChannel", "WhatsApp"], ["linkedin", "LinkedIn"], ["facebook", "Facebook"], ["threads", "Threads"], ["telegram", "Telegram"]];
+function renderFollow() {
+  const el = document.getElementById("social"); if (!el) return;
+  const links = state.links || {};
+  const ico = k => '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[k] + '</svg>';
+  const live = PLATFORMS.filter(([k]) => safeUrl(links[k]));
+  el.innerHTML = live.map(([k, n]) => '<a class="sbtn on" href="' + esc(safeUrl(links[k])) + '" target="_blank" rel="noopener">' + ico(k) + '<span>' + n + '</span></a>').join("");
+  const box = document.getElementById("followbox"); if (box) box.hidden = !live.length;
+  const y = document.getElementById("year"); if (y) y.textContent = new Date().getFullYear();
+}
+
+function renderAll() { applyStrings(); renderResources(); renderGuides(); renderPosts(); renderLinks(); renderFollow(); renderPost(); }
 
 /* ---------- start ---------- */
 function useData(d) {
@@ -246,6 +333,14 @@ function useData(d) {
   state.posts = d.posts || [];
   state.links = toLinks(d.links || []);
   renderAll();
+}
+/* guides.json: the pages on this website (instant from cache, then fresh) */
+if (document.getElementById("guides")) {
+  state.guides = store.get("sb_guides");
+  fetch("/guides.json", { cache: "no-cache" }).then(r => r.ok ? r.json() : null).then(g => {
+    if (Array.isArray(g)) { state.guides = g; store.set("sb_guides", g); renderGuides(); }
+    else if (state.guides === null) { state.guides = []; renderGuides(); }
+  }).catch(() => { if (state.guides === null) { state.guides = []; renderGuides(); } });
 }
 if (window.__DATA__) {
   useData(window.__DATA__);              // post pages arrive with their content already inside

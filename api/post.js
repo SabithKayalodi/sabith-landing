@@ -11,7 +11,6 @@ const HEADER = `
       <nav aria-label="Sections">
         <a href="/#free" data-i18n="navFree">Free resources</a>
         <a href="/posts" data-i18n="navPosts">Posts</a>
-        <a href="/#series" data-i18n="navSeries">Series</a>
         <a href="/#follow" data-i18n="navFollow">Follow</a>
       </nav>
       <div class="lang" role="group" aria-label="Language">

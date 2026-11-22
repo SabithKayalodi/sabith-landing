@@ -82,7 +82,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid var(--amber);outline-o
       <button type="button" role="tab" data-tab="posts" aria-selected="true">Posts</button>
       <button type="button" role="tab" data-tab="resources" aria-selected="false">Resources</button>
       <button type="button" role="tab" data-tab="links" aria-selected="false">Links</button>
-      <button type="button" role="tab" data-tab="settings" aria-selected="false">About &amp; text</button>
+      <button type="button" role="tab" data-tab="settings" aria-selected="false">Home page</button>
     </div>
     <div id="view"></div>
   </div>
@@ -102,6 +102,7 @@ let PW = "";
 try { PW = sessionStorage.getItem("sb_admin") || ""; } catch (e) {}
 let DATA = { posts: [], resources: [], links: [], settings: {} };
 let TAB = "posts";
+let GUIDES = [];   // pages on the website (from /guides.json), listed on the home page automatically
 
 function toast(msg, isErr) {
   const t = $("#toast"); t.textContent = msg; t.className = "toast" + (isErr ? " err" : ""); t.hidden = false;
@@ -119,6 +120,7 @@ async function load() {
   const j = await api({ action: "list" });
   DATA = j.data;
   DATA.links = DATA.links || []; DATA.settings = DATA.settings || {};
+  try { const g = await fetch("/guides.json", { cache: "no-cache" }).then(r => r.json()); GUIDES = Array.isArray(g) ? g : []; } catch (e) { GUIDES = []; }
 }
 $("#loginForm").addEventListener("submit", async e => {
   e.preventDefault();
@@ -218,7 +220,7 @@ It gets a Copy button. [WORDS IN CAPITALS] show in amber.
 
 &gt; **Tip** This becomes a yellow tip box.
 
-[Link text](https://sabith.com/ai-video-editor)
+[Link text](https://sabithk.com/ai-video-editor)
 ![Image description](https://link-to-image.jpg)</pre></details>
         <textarea class="body" id="f_body" lang="${lang}">${esc(vals["body_" + lang])}</textarea></label>`;
     $("#f_title").addEventListener("input", e => { if (lang === "en" && !slugTouched.v) $("#f_slug").value = slugify(e.target.value); });
@@ -284,24 +286,57 @@ function shrink(file, max = 1600) {
 }
 
 /* Resources */
+const hiddenKw = () => String((DATA.settings.hideGuides || {}).en || "").toUpperCase().split(/[\s,]+/).filter(Boolean);
+async function setGuideHidden(kw, hide) {
+  const set = new Set(hiddenKw()); hide ? set.add(kw) : set.delete(kw);
+  await api({ action: "save", type: "settings", row: { key: "hideGuides", en: [...set].join(", "), ml: "" } });
+}
 function listResources() {
   const list = DATA.resources;
+  const hk = hiddenKw();
+  const ownList = list.map((r, i) => [r, i]).filter(([r]) => !GUIDES.some(g => g.keyword.toUpperCase() === String(r.keyword || "").toUpperCase()));
   $("#view").innerHTML = `<div class="panel">
-    <div class="actionsbar"><button class="btn btn-amber" type="button" id="newRes">+ New resource</button></div>
-    <p class="hint">Top of the list shows first on the website.</p>
-    <div class="list">${list.length ? list.map((r, i) => `
+    <h2 style="font-size:1.3rem;font-weight:800">Pages on your website</h2>
+    <p class="hint">These are listed on your home page automatically, newest first. Hide one, or tap Edit text to change its title or description.</p>
+    <div class="list">${GUIDES.length ? GUIDES.map((g, i) => {
+      const off = hk.includes(g.keyword.toUpperCase());
+      return `<div class="item" style="cursor:default">
+        <span><b>${esc(g.keyword)} · ${esc(g.title)}</b><span class="m">${esc(g.date || "")} · ${esc(g.link)}</span></span>
+        <span style="display:flex;gap:8px;flex:none">
+          <button class="small-btn" type="button" data-gedit="${i}">Edit text</button>
+          <button class="small-btn" type="button" data-ghide="${i}">${off ? "Show" : "Hide"}</button>
+        </span>
+        <span class="pill ${off ? "off" : ""}">${off ? "Hidden" : "Live"}</span>
+      </div>`; }).join("") : `<p class="empty">No pages yet.</p>`}</div>
+
+    <h2 style="font-size:1.3rem;font-weight:800;margin-top:26px">Your own items</h2>
+    <div class="actionsbar"><button class="btn btn-amber" type="button" id="newRes">+ New item</button></div>
+    <p class="hint">For things that aren't pages on this site, like a Google Drive PDF. Empty link = shows "Coming soon".</p>
+    <div class="list">${ownList.length ? ownList.map(([r, i]) => `
       <button class="item" type="button" data-i="${i}">
         <span><b>${esc(r.keyword)} · ${esc(r.title)}</b><span class="m">${esc(r.format)}${safeUrl(r.link) ? " · link added" : " · no link yet (shows Coming soon)"}</span></span>
         <span class="pill ${hidden(r) ? "off" : ""}">${hidden(r) ? "Hidden" : "Live"}</span>
-      </button>`).join("") : `<p class="empty">No resources yet.</p>`}</div></div>`;
+      </button>`).join("") : `<p class="empty">None yet.</p>`}</div></div>`;
   $("#newRes").onclick = () => editResource(null);
-  document.querySelectorAll(".item").forEach(b => b.onclick = () => editResource(list[+b.dataset.i]));
+  document.querySelectorAll("[data-i]").forEach(b => b.onclick = () => editResource(list[+b.dataset.i]));
+  document.querySelectorAll("[data-ghide]").forEach(b => b.onclick = async () => {
+    const g = GUIDES[+b.dataset.ghide]; b.disabled = true;
+    try { await setGuideHidden(g.keyword.toUpperCase(), b.textContent.trim() === "Hide"); await load(); toast("Saved. Live within about a minute."); listResources(); }
+    catch (err) { toast(err.message, true); b.disabled = false; }
+  });
+  document.querySelectorAll("[data-gedit]").forEach(b => b.onclick = () => {
+    const g = GUIDES[+b.dataset.gedit];
+    const o = list.find(r => String(r.keyword || "").toUpperCase() === g.keyword.toUpperCase());
+    editResource(o || { ...g, link: "", show: "yes", new: "", _fromGuide: true });
+  });
 }
 function editResource(r) {
-  const isNew = !r; r = r || { format: "PDF", show: "yes", new: "yes" };
+  const fromGuide = !!(r && r._fromGuide);
+  const isNew = !r || fromGuide; r = r || { format: "PDF", show: "yes", new: "yes" };
+  const isPage = GUIDES.some(g => g.keyword.toUpperCase() === String(r.keyword || "").toUpperCase());
   $("#view").innerHTML = `<form class="panel" id="rf">
     <div class="actionsbar"><button class="small-btn" type="button" id="back">← All resources</button></div>
-    <h2 style="font-size:1.4rem;font-weight:800">${isNew ? "New resource" : "Edit resource"}</h2>
+    <h2 style="font-size:1.4rem;font-weight:800">${fromGuide ? "Edit page text" : isNew ? "New item" : "Edit item"}</h2>
     <div class="row">
       <label for="r_kw">Keyword <small>The word you say in the reel, e.g. TOOLS</small><input type="text" id="r_kw" value="${esc(r.keyword || "")}" required></label>
       <label for="r_fmt">Format<select id="r_fmt">${["PDF", "Workflow", "Template", "Sheet", "Video", "Guide"].map(f => `<option ${f === r.format ? "selected" : ""}>${f}</option>`).join("")}</select></label>
@@ -312,7 +347,7 @@ function editResource(r) {
     </div>
     <label for="r_d">Description (English)<textarea id="r_d">${esc(r.description || "")}</textarea></label>
     <label for="r_dm">Description (Malayalam)<textarea id="r_dm" lang="ml">${esc(r.description_ml || "")}</textarea></label>
-    <label for="r_l">Download link <small>Google Drive link with "Anyone with the link can view". Empty = Coming soon.</small><input type="url" id="r_l" value="${esc(r.link || "")}" placeholder="https://"></label>
+    <label for="r_l">${isPage ? "Link <small>Leave empty to keep the link to your page.</small>" : "Download link <small>Google Drive link with \"Anyone with the link can view\". Empty = Coming soon.</small>"}<input type="url" id="r_l" value="${esc(r.link || "")}" placeholder="https://"></label>
     <label class="check" for="r_new"><input type="checkbox" id="r_new" ${String(r.new).toLowerCase() === "yes" ? "checked" : ""}> Show "New" label</label>
     <label class="check" for="r_show"><input type="checkbox" id="r_show" ${hidden(r) ? "" : "checked"}> Show on website</label>
     <div class="actionsbar"><button class="btn btn-navy" type="submit" id="save">Save</button>${!isNew ? `<button class="small-btn danger" type="button" id="del">Delete</button>` : ""}</div>
@@ -332,11 +367,12 @@ function editResource(r) {
 
 /* Links */
 function editLinks() {
-  const names = ["Instagram", "YouTube", "WhatsApp Channel", "LinkedIn"];
-  const get = n => (DATA.links.find(l => String(l.platform).toLowerCase() === n.toLowerCase()) || {}).link || "";
+  const names = ["Instagram", "YouTube", "X", "WhatsApp Channel", "LinkedIn", "Facebook", "Threads", "Telegram"];
+  const alias = { x: ["x", "twitter", "x (twitter)"] };
+  const get = n => (DATA.links.find(l => (alias[n.toLowerCase()] || [n.toLowerCase()]).includes(String(l.platform).toLowerCase())) || {}).link || "";
   $("#view").innerHTML = `<form class="panel" id="lf">
     <h2 style="font-size:1.4rem;font-weight:800">Your profile links</h2>
-    <p class="hint">Empty = shows "link soon" on the website.</p>
+    <p class="hint">Paste the link to your profile. Only platforms with a link show on your home page (as glowing buttons). Leave it empty to hide that platform.</p>
     ${names.map((n, i) => `<label for="l_${i}">${n}<input type="url" id="l_${i}" value="${esc(get(n))}" placeholder="https://"></label>`).join("")}
     <div class="actionsbar"><button class="btn btn-navy" type="submit" id="save">Save links</button></div>
   </form>`;
@@ -353,36 +389,73 @@ function editLinks() {
 }
 
 /* About & page text */
+/* [key, label, English default, Malayalam default, long text?, group] — the defaults match /assets/site.js */
 const TEXT_FIELDS = [
-  ["aboutHead", "About heading", "Hi, I'm Sabith", "ഹായ്, ഞാൻ സബിത്ത്", false],
-  ["aboutText", "About text", "I test AI tools and automations on real work every week, and share only what actually saves time, in simple Malayalam. No coding, no hype.", "എല്ലാ ആഴ്ചയും AI tools-ഉം automations-ഉം യഥാർത്ഥ ജോലിയിൽ പരീക്ഷിച്ച്, ശരിക്കും സമയം ലാഭിക്കുന്നവ മാത്രം ലളിതമായ മലയാളത്തിൽ പങ്കുവെക്കുന്നു. കോഡിംഗ് വേണ്ട, hype ഇല്ല.", true],
-  ["tagline", "Tagline under your name", "Practical AI & automation · Malayalam", "പ്രായോഗിക AI & automation · മലയാളം", false],
-  ["sub", "Line under the headline", "Save hours at work and in business.", "ജോലിയിലും ബിസിനസ്സിലും മണിക്കൂറുകൾ ലാഭിക്കാം.", false],
-  ["lead", "Intro sentence", "Every PDF and workflow from my reels, in one place. Download, copy and use it today.", "എന്റെ reels-ലെ എല്ലാ PDF-കളും workflows-ഉം ഒരിടത്ത്. ഇന്നുതന്നെ download ചെയ്ത് ഉപയോഗിക്കൂ.", true]
+  ["name", "Your name", "Sabith", "Sabith", false, "Top of the page"],
+  ["tagline", "Line under your name", "Practical AI & automation · Malayalam", "പ്രായോഗിക AI & automation · മലയാളം", false, "Top of the page"],
+  ["tag", "Small label above the headline", "Free · No coding", "സൗജന്യം · കോഡിംഗ് വേണ്ട", false, "Top of the page"],
+  ["headline", "Headline  (put *stars* around words to highlight them in yellow)", "Practical AI & *automation workflows*", "പ്രായോഗിക AI-യും *automation workflows-ഉം*", false, "Top of the page"],
+  ["sub", "Line under the headline", "Every guide from my reels, in one place.", "എന്റെ reels-ലെ എല്ലാ guides-ഉം ഒരിടത്ത്.", false, "Top of the page"],
+  ["guidesHead", "List heading", "Free guides", "സൗജന്യ guides", false, "Guide list"],
+  ["guidesLine", "Line under the list heading", "Tap a guide to open it. New ones show up here first.", "ഒരു guide തുറക്കാൻ അതിൽ tap ചെയ്യൂ. പുതിയവ ആദ്യം ഇവിടെ വരും.", false, "Guide list"],
+  ["searchPh", "Text inside the search box", "Type a keyword from a reel", "Reel-ലെ keyword type ചെയ്യൂ", false, "Guide list"],
+  ["noMatch", "When the search finds nothing", "No guide with that keyword yet. Check the reel caption, or follow below to get it first.", "ആ keyword-ൽ ഇതുവരെ guide ഇല്ല. Reel caption നോക്കൂ, അല്ലെങ്കിൽ താഴെ follow ചെയ്ത് ആദ്യം അറിയൂ.", true, "Guide list"],
+  ["newLabel", "\"New\" label", "New", "പുതിയത്", false, "Guide list"],
+  ["soon", "\"Coming soon\" label", "Coming soon", "ഉടൻ വരുന്നു", false, "Guide list"],
+  ["postsHead", "Posts heading", "Latest posts", "പുതിയ posts", false, "Latest posts (if switched on)"],
+  ["allPosts", "Link to all posts", "See all posts →", "എല്ലാ posts-ഉം കാണൂ →", false, "Latest posts (if switched on)"],
+  ["aboutTag", "Small label above the heading", "About me", "എന്നെക്കുറിച്ച്", false, "About me"],
+  ["aboutHead", "Heading", "Hi, I'm Sabith", "ഹായ്, ഞാൻ സബിത്ത്", false, "About me"],
+  ["aboutText", "Text about you", "I test AI tools and automations on real work every week, and share only what actually saves time, in simple Malayalam. No coding, no hype.", "എല്ലാ ആഴ്ചയും AI tools-ഉം automations-ഉം യഥാർത്ഥ ജോലിയിൽ പരീക്ഷിച്ച്, ശരിക്കും സമയം ലാഭിക്കുന്നവ മാത്രം ലളിതമായ മലയാളത്തിൽ പങ്കുവെക്കുന്നു. കോഡിംഗ് വേണ്ട, hype ഇല്ല.", true, "About me"],
+  ["followHead", "Follow heading", "Follow for new guides", "പുതിയ guides-ന് follow ചെയ്യൂ", false, "Bottom of the page"],
+  ["followLine", "Line under the follow heading", "New guides every week.", "എല്ലാ ആഴ്ചയും പുതിയ guides.", false, "Bottom of the page"],
+  ["footer", "Place at the very bottom", "Kerala, India", "കേരളം, ഇന്ത്യ", false, "Bottom of the page"]
+];
+/* [key, label, on by default?] */
+const TOGGLES = [
+  ["showHero", "Headline at the top", true],
+  ["showSearch", "Keyword search box", true],
+  ["showPosts", "Latest posts", false],
+  ["showAbout", "About me section", true]
 ];
 function editSettings() {
   const cur = k => DATA.settings[k] || {};
+  const groups = [...new Set(TEXT_FIELDS.map(x => x[5]))];
+  const on = (k, d) => { const v = String(cur(k).en || "").trim(); return v ? /^(yes|y|true|1)$/i.test(v) : d; };
+  const field = ([k, label, en, ml, long]) => `
+      <div style="display:grid;gap:8px">
+        <b style="font-size:14px">${esc(label)}</b>
+        <label for="s_${k}_en"><small>English</small>${long ? `<textarea id="s_${k}_en">${esc(cur(k).en || en)}</textarea>` : `<input type="text" id="s_${k}_en" value="${esc(cur(k).en || en)}">`}</label>
+        <label for="s_${k}_ml"><small>Malayalam</small>${long ? `<textarea id="s_${k}_ml" lang="ml">${esc(cur(k).ml || ml)}</textarea>` : `<input type="text" id="s_${k}_ml" lang="ml" value="${esc(cur(k).ml || ml)}">`}</label>
+      </div>`;
   $("#view").innerHTML = `<form class="panel" id="sf">
-    <h2 style="font-size:1.4rem;font-weight:800">About &amp; page text</h2>
-    <p class="hint">Change the wording on your home page in both languages.</p>
-    ${TEXT_FIELDS.map(([k, label, en, ml, long]) => `
-      <fieldset style="border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:12px">
-        <legend style="font-weight:700;padding:0 6px">${label}</legend>
-        <label for="s_${k}_en">English${long ? `<textarea id="s_${k}_en">${esc(cur(k).en || en)}</textarea>` : `<input type="text" id="s_${k}_en" value="${esc(cur(k).en || en)}">`}</label>
-        <label for="s_${k}_ml">Malayalam${long ? `<textarea id="s_${k}_ml" lang="ml">${esc(cur(k).ml || ml)}</textarea>` : `<input type="text" id="s_${k}_ml" lang="ml" value="${esc(cur(k).ml || ml)}">`}</label>
-      </fieldset>`).join("")}
-    <div class="actionsbar"><button class="btn btn-navy" type="submit" id="save">Save text</button></div>
+    <h2 style="font-size:1.4rem;font-weight:800">Home page</h2>
+    <p class="hint">Everything on your home page, in both languages. Change what you want, then press Save at the bottom. The guide list fills itself from your pages (Resources tab) and the follow buttons from the Links tab.</p>
+    <fieldset style="border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:4px">
+      <legend style="font-weight:700;padding:0 6px">Show on the home page</legend>
+      ${TOGGLES.map(([k, label, d]) => `<label class="check" for="t_${k}"><input type="checkbox" id="t_${k}" ${on(k, d) ? "checked" : ""}> ${esc(label)}</label>`).join("")}
+    </fieldset>
+    ${groups.map(g => `<details style="border:1px solid var(--line);border-radius:14px;padding:12px 14px" ${g === "Top of the page" ? "open" : ""}>
+      <summary style="font-weight:700;cursor:pointer;min-height:32px">${esc(g)}</summary>
+      <div style="display:grid;gap:16px;margin-top:10px">${TEXT_FIELDS.filter(x => x[5] === g).map(field).join("")}</div>
+    </details>`).join("")}
+    <div class="actionsbar"><button class="btn btn-navy" type="submit" id="save">Save home page</button></div>
   </form>`;
   $("#sf").addEventListener("submit", async e => {
     e.preventDefault(); $("#save").disabled = true; $("#save").textContent = "Saving…";
     try {
+      let n = 0;
+      for (const [k, label, d] of TOGGLES) {
+        const v = $(`#t_${k}`).checked;
+        if (v !== on(k, d)) { await api({ action: "save", type: "settings", row: { key: k, en: v ? "yes" : "no", ml: "" } }); n++; }
+      }
       for (const [k, , en, ml] of TEXT_FIELDS) {
         const vEn = $(`#s_${k}_en`).value.trim(), vMl = $(`#s_${k}_ml`).value.trim();
         const c = cur(k);
-        if (vEn !== (c.en || en) || vMl !== (c.ml || ml) || !DATA.settings[k]) await api({ action: "save", type: "settings", row: { key: k, en: vEn, ml: vMl } });
+        if (vEn !== (c.en || en) || vMl !== (c.ml || ml)) { await api({ action: "save", type: "settings", row: { key: k, en: vEn, ml: vMl } }); n++; }
       }
-      await load(); toast("Text saved. Live within about a minute."); editSettings();
-    } catch (err) { toast(err.message, true); $("#save").disabled = false; $("#save").textContent = "Save text"; }
+      await load(); toast(n ? "Saved. Live within about a minute." : "Nothing changed."); editSettings();
+    } catch (err) { toast(err.message, true); $("#save").disabled = false; $("#save").textContent = "Save home page"; }
   });
 }
 </script>
