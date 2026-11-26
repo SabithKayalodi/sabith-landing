@@ -2,12 +2,12 @@
   {
     "keyword": "EDIT",
     "format": "Guide",
-    "date": "2026-11-22",
+    "date": "2026-11-26",
     "link": "/ai-video-editor",
     "title": "Build your own AI video editor with Claude Code",
     "title_ml": "Claude Code വെച്ച് സ്വന്തം AI video editor ഉണ്ടാക്കാം",
-    "description": "4 steps, 5 free tools and 3 copy-paste prompts. From an empty folder to a finished Reel.",
-    "description_ml": "4 steps, 5 സൗജന്യ tools, copy-paste ചെയ്യാവുന്ന 3 prompts. Empty folder-ൽ നിന്ന് finished Reel വരെ."
+    "description": "5 steps, 5 free tools, 3 copy-paste prompts and 2 free skills. Your voice + one photo in, a finished Reel out.",
+    "description_ml": "5 steps, 5 സൗജന്യ tools, copy-paste ചെയ്യാവുന്ന 3 prompts, 2 free skills. Voice-ഉം ഒരു photo-യും കൊടുത്താൽ finished Reel."
   },
   {
     "keyword": "SCAN",

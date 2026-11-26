@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Build Your Own AI Video Editor with Claude Code | Free Guide | Sabith</title>
-<meta name="description" content="Step-by-step guide in English and Malayalam: set up Claude Code with Remotion, HyperFrames, FFmpeg, Whisper and yt-dlp, and edit Reels with 3 copy-paste prompts.">
+<meta name="description" content="Step-by-step guide in English and Malayalam: set up Claude Code with Remotion, HyperFrames, FFmpeg, Whisper and yt-dlp, then turn your voice and one photo into a finished Reel. 3 copy-paste prompts and 2 free skills.">
 <meta property="og:title" content="Build your own AI video editor with Claude Code (free guide)">
-<meta property="og:description" content="From an empty folder to a finished Reel. 4 steps, 5 free tools, 3 copy-paste prompts. English and Malayalam.">
+<meta property="og:description" content="Voice + photo in, finished Reel out. 5 steps, 5 free tools, 3 copy-paste prompts, 2 free skills. English and Malayalam.">
 <meta property="og:image" content="/assets/og.jpg">
 <meta property="og:type" content="article">
 <meta name="twitter:card" content="summary_large_image">
@@ -51,6 +51,14 @@
   .more b{display:block;font-size:1.1rem}
   .src{font-size:14.5px;color:var(--ink-2)}
   .src li{word-break:break-word}
+  .alt{border:1px dashed var(--line);border-radius:14px;padding:12px 16px;margin:10px 0 14px}
+  .alt summary{cursor:pointer;font-weight:700;color:var(--ink-2)}
+  .alt[open] summary{margin-bottom:10px}
+  .skills{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin:14px 0 18px}
+  .skill{border:1px solid var(--line);border-radius:16px;padding:18px 18px 14px;background:#fff;display:flex;flex-direction:column}
+  .skill b{font:800 1.15rem ui-monospace,Menlo,Consolas,monospace;margin-bottom:6px}
+  .skill p{color:var(--ink-2);font-size:15.5px;flex:1}
+  .skill .dl{align-self:flex-start}
   [data-l]{display:none}
   html[lang="en"] [data-l="en"],html[lang="ml"] [data-l="ml"]{display:block}
 </style>
@@ -83,36 +91,41 @@
 <article data-l="en" lang="en">
   <span class="tag">Free guide · EDIT</span>
   <h1>Build your own <span class="hl">AI video editor</span> with Claude Code</h1>
-  <p class="sub">From an empty folder to a finished Reel</p>
-  <p class="lead">Lots of people now edit videos with Claude, but almost nobody explains the setup. Here is the whole workflow I use: one folder, five free tools, and three prompts you can copy and paste. You don't need to install anything by hand. Claude does it for you.</p>
-  <a class="dl" href="/assets/ai-video-editor-starter-kit.pdf" target="_blank" rel="noopener">Open the PDF version</a>
-  <p class="pdfnote">Opened this from Instagram and the PDF won't open? Tap <b>⋯</b> at the top right, then <b>Open in browser</b>.</p>
+  <p class="sub">Voice + photo in. Finished Reel out.</p>
+  <p class="lead">I didn't edit my last reel, not a single second. I gave Claude Code one voice file and one photo, and it did the cuts, captions, motion graphics and music. Here is the whole setup: 5 steps, 5 free tools, 3 copy-paste prompts and 2 free skills. You don't install anything by hand. Claude does it for you.</p>
 
   <h2>Before you start</h2>
   <ul>
     <li>The <b>Claude desktop app</b>, with <b>Claude Code</b> opened inside it. Use the desktop app, not the browser.</li>
     <li>A Claude plan that includes Claude Code (it may need a paid plan).</li>
-    <li><b>Node.js 22 or newer</b>, which HyperFrames needs. If you don't have it, Claude can install it in step 2.</li>
-    <li>Links to <b>3 to 5 Instagram videos</b> whose editing style you like, for step 3.</li>
-    <li><b>One raw video clip</b>, for step 4.</li>
+    <li><b>Node.js 22 or newer</b>, which HyperFrames needs. If you don't have it, Claude can install it in step 3.</li>
+    <li>Links to <b>3 to 5 Instagram videos</b> whose editing style you like, for step 4.</li>
+    <li>A <b>voiceover</b> (your own recording or an AI voice) and <b>one photo of you</b>, for step 5. The script text helps too.</li>
   </ul>
 
   <div class="step">
-    <div class="top"><span class="num">1</span><h3>Set up your workspace</h3></div>
+    <div class="top"><span class="num">1</span><h3>Install Claude and open Claude Code</h3></div>
     <ol>
-      <li>On your computer, create a folder called <b>AI Video Editor</b>.</li>
-      <li>Inside it, create three folders: <b>Raw Footage</b>, <b>References</b> and <b>Exports</b>. (In the reel I call the first one "Raw Files"; either name works, just use the same name in prompt 3.)</li>
-      <li>Open the Claude desktop app and start a new <b>Claude Code</b> chat.</li>
-      <li>Choose <b>Local</b>, then select the <b>AI Video Editor</b> folder. Now Claude can see your files.</li>
+      <li>Install the <b>Claude desktop app</b> from <a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a> and sign in.</li>
+      <li>Open the <b>Code</b> tab. That's Claude Code.</li>
     </ol>
-    <div class="tree"><b>AI Video Editor</b>
-├─ Raw Footage   your clips
-├─ References    style videos
-└─ Exports       final videos</div>
   </div>
 
   <div class="step">
-    <div class="top"><span class="num">2</span><h3>Install the tools (prompt 1)</h3></div>
+    <div class="top"><span class="num">2</span><h3>Set up your workspace</h3></div>
+    <ol>
+      <li>On your computer, create a folder called <b>AI Video Editor</b>.</li>
+      <li>Inside it, create three folders: <b>Raw Footage</b>, <b>References</b> and <b>Exports</b>.</li>
+      <li>In Claude Code, start a new chat, choose <b>Local</b>, then select the <b>AI Video Editor</b> folder. Now Claude can see your files.</li>
+    </ol>
+    <div class="tree"><b>AI Video Editor</b>
+├─ Raw Footage   your voice, photo, clips
+├─ References    style videos
+└─ Exports       finished videos</div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">3</span><h3>Install the tools (prompt 1)</h3></div>
     <p>Paste this into Claude Code. Claude installs and tests all five tools. When it asks for permission to run a command, read it and allow it. Wait until it says it's ready.</p>
     <div class="code"><pre>I want you to be my video editor. Install these tools on my computer and test each one:
 1. Remotion: github.com/remotion-dev/remotion
@@ -124,17 +137,17 @@ When everything works, tell me you are ready.</pre><button type="button">Copy</b
     <table class="score">
       <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
       <tbody>
-        <tr><td><b>Remotion</b></td><td>Builds videos from code: edits and motion graphics</td></tr>
-        <tr><td><b>HyperFrames</b></td><td>HeyGen's open-source tool that turns HTML into MP4, made for AI agents</td></tr>
-        <tr><td><b>FFmpeg</b></td><td>Cuts, converts and exports video and audio</td></tr>
-        <tr><td><b>Whisper</b></td><td>Turns speech into text, so Claude can make captions</td></tr>
+        <tr><td><b>Remotion</b></td><td>Builds videos from code: motion graphics and edits</td></tr>
+        <tr><td><b>HyperFrames</b></td><td>HeyGen's open-source tool that turns HTML into MP4, also for motion graphics</td></tr>
+        <tr><td><b>FFmpeg</b></td><td>Cuts, mixes and exports video and audio</td></tr>
+        <tr><td><b>Whisper</b></td><td>Turns speech into timed text, so Claude can make captions</td></tr>
         <tr><td><b>yt-dlp</b></td><td>Downloads your reference videos</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="step">
-    <div class="top"><span class="num">3</span><h3>Teach Claude your style (prompt 2)</h3></div>
+    <div class="top"><span class="num">4</span><h3>Teach Claude your style (prompt 2)</h3></div>
     <p>Claude knows how to edit, but it doesn't know your taste. Replace the three placeholders with links to videos whose editing you like (3 to 5 is best), then paste the prompt. Claude builds a <b>brand sheet</b> for you to review.</p>
     <div class="code"><pre>Learn the editing style from these videos:
 <span class="ph">[PASTE INSTAGRAM LINK 1]</span>
@@ -148,25 +161,56 @@ Once I approve it, follow it every time you edit for me.</pre><button type="butt
   </div>
 
   <div class="step">
-    <div class="top"><span class="num">4</span><h3>Film and edit (prompt 3)</h3></div>
-    <p>Film your video the way you normally do and put the raw file in the <b>Raw Footage</b> folder. Paste this prompt and replace <b>[FILE NAME]</b> with your file's name.</p>
-    <div class="code"><pre>Edit my new video into an Instagram Reel:
+    <div class="top"><span class="num">5</span><h3>Voice + photo → Reel (prompt 3)</h3></div>
+    <p>No camera needed. Put your <b>voice file</b> and <b>one photo</b> in the Raw Footage folder (add the script as a .txt file if you have it). Install the free <a href="#skills">faceless-reel skill</a> once, then paste this prompt and fill in the file names and your handle.</p>
+    <div class="code"><pre>Make an Instagram Reel from my voiceover, using the faceless-reel skill:
+Voice: <span class="ph">[VOICE FILE]</span> in my Raw Footage folder
+Photo: <span class="ph">[PHOTO FILE]</span> in my Raw Footage folder
+Script: <span class="ph">[SCRIPT FILE, or delete this line]</span>
+1. Follow my approved brand sheet.
+2. Time every scene and caption to my voice.
+3. Show my photo as a small round badge with my handle <span class="ph">[@YOUR HANDLE]</span>.
+4. Add motion graphics, music, and sound effects.
+Show me a preview screenshot of every scene first. After I approve, export the final video to my Exports folder.</pre><button type="button">Copy</button></div>
+    <p>Claude times every scene to your voice, adds captions, motion graphics and music, and shows you preview screenshots first. Approve them and the finished video lands in <b>Exports</b>.</p>
+    <p>Not happy with something? Just tell Claude in plain words, like you'd tell a person: <i>"Make the hook bigger."</i> or <i>"Change the background."</i> Claude fixes it.</p>
+    <details class="alt">
+      <summary>Filming yourself instead? Use this prompt</summary>
+      <p>Put your raw video in Raw Footage and replace <b>[FILE NAME]</b>.</p>
+      <div class="code"><pre>Edit my new video into an Instagram Reel:
 <span class="ph">[FILE NAME]</span> in my Raw Footage folder
 1. Remove every pause longer than 0.1 seconds.
 2. Follow my approved brand sheet.
 3. Add captions, music, and motion graphics.
 4. Use anything useful from my References folder.
 Show me a storyboard to review first. After I approve it, export the final video to my Exports folder.</pre><button type="button">Copy</button></div>
-    <p>Claude cuts the dead air, adds captions and music, and shows you a storyboard first. Approve it and the finished video lands in <b>Exports</b>.</p>
-    <p>Not happy with something? Just tell Claude in plain words, like you'd tell a person: <i>"Make the hook bigger."</i> or <i>"Change the background."</i> Claude fixes it.</p>
+    </details>
   </div>
+
+  <h2 id="skills">Free skills</h2>
+  <p>A skill is a set of instructions Claude follows every time it does a certain job. These two are the ones behind my reels, cleaned up so they work for anyone.</p>
+  <div class="skills">
+    <div class="skill">
+      <b>faceless-reel</b>
+      <p>Turns your voice + photo into a finished Reel in your brand style: scenes timed to your voice, word-by-word captions, your photo badge, motion graphics, music and sound effects. Shows you screenshots before it renders.</p>
+      <a class="dl" href="/assets/faceless-reel-skill.zip" download>Download faceless-reel</a>
+    </div>
+    <div class="skill">
+      <b>reel-post-kit</b>
+      <p>Gets a finished Reel ready to post: a cover thumbnail in your style, 3 caption options and the comment-keyword auto-DM.</p>
+      <a class="dl" href="/assets/reel-post-kit-skill.zip" download>Download reel-post-kit</a>
+    </div>
+  </div>
+  <p><b>Install a skill:</b> download the .zip, then paste this into Claude Code (with your AI Video Editor folder open) and fill in the file name.</p>
+  <div class="code"><pre>Install the skill in <span class="ph">[ZIP FILE NAME]</span> from my Downloads folder into this project's .claude/skills folder, then tell me it's ready.</pre><button type="button">Copy</button></div>
+  <div class="box"><b>Check before you install</b>Open the SKILL.md file and read it, or scan it first, even when it's from me. <a href="/skillspector">Here's how to scan a skill</a>.</div>
 
   <h2>Tips for better results</h2>
   <ul>
     <li>Pick 3 to 5 reference videos that share the same style.</li>
-    <li>Review the brand sheet and the storyboard before you approve them.</li>
+    <li>Give Claude your script text. Captions then use your exact words and spellings.</li>
+    <li>Review the brand sheet and the preview screenshots before you approve them.</li>
     <li>Ask for one change at a time, in plain words.</li>
-    <li>Keep clips in Raw Footage and finished videos in Exports, so Claude always knows where to look.</li>
     <li>Only use music you're allowed to use (royalty-free or your own licence).</li>
   </ul>
 
@@ -176,6 +220,7 @@ Show me a storyboard to review first. After I approve it, export the final video
     <tbody>
       <tr><td>Claude can't see your files</td><td>Start a new Claude Code chat, choose <b>Local</b>, and select the <b>AI Video Editor</b> folder itself, not a folder inside it.</td></tr>
       <tr><td>A tool fails to install</td><td>Paste the error back into the chat and say "fix this". If it mentions Node.js, ask Claude to install Node.js 22 first.</td></tr>
+      <tr><td>Captions spell your words wrong</td><td>Put your script in Raw Footage as a .txt file and name it in prompt 3. For Malayalam and other languages, ask Claude to use the large Whisper model.</td></tr>
       <tr><td>Reference video won't download</td><td>Check the link opens in your browser. Private accounts can't be downloaded; pick a public video.</td></tr>
       <tr><td>The edit doesn't feel like you</td><td>Ask Claude to update the brand sheet with one specific change, approve it, then edit again.</td></tr>
     </tbody>
@@ -198,36 +243,41 @@ Show me a storyboard to review first. After I approve it, export the final video
 <article data-l="ml" lang="ml">
   <span class="tag">Free guide · EDIT</span>
   <h1>Claude Code വെച്ച് സ്വന്തം <span class="hl">AI video editor</span> ഉണ്ടാക്കാം</h1>
-  <p class="sub">ഒരു empty folder-ൽ നിന്ന് finished Reel വരെ</p>
-  <p class="lead">ഇപ്പോൾ എല്ലാവരും Claude വെച്ചാണ് videos edit ചെയ്യുന്നത്. പക്ഷേ അതിന്റെ setup വ്യക്തമായി ആരും പറയുന്നില്ല. ഞാൻ ഉപയോഗിക്കുന്ന മുഴുവൻ workflow ഇതാ: ഒരു folder, അഞ്ച് സൗജന്യ tools, copy-paste ചെയ്യാവുന്ന മൂന്ന് prompts. ഒന്നും നിങ്ങൾ സ്വയം install ചെയ്യേണ്ട. Claude അത് ചെയ്യും.</p>
-  <a class="dl" href="/assets/ai-video-editor-starter-kit.pdf" target="_blank" rel="noopener">PDF version തുറക്കാം (English)</a>
-  <p class="pdfnote">Instagram-ൽ നിന്നാണ് തുറന്നതെങ്കിൽ PDF വരുന്നില്ലേ? മുകളിൽ വലതുവശത്തെ <b>⋯</b> അമർത്തി <b>Open in browser</b> തിരഞ്ഞെടുക്കുക.</p>
+  <p class="sub">Voice-ഉം photo-യും കൊടുത്താൽ finished Reel</p>
+  <p class="lead">എന്റെ കഴിഞ്ഞ reel ഞാൻ edit ചെയ്തതല്ല, ഒരു second പോലും. ഒരു voice file-ഉം ഒരു photo-യും Claude Code-ന് കൊടുത്തു. Cuts, captions, motion graphics, music, എല്ലാം Claude ചെയ്തു. മുഴുവൻ setup ഇതാ: 5 steps, 5 സൗജന്യ tools, copy-paste ചെയ്യാവുന്ന 3 prompts, 2 free skills. ഒന്നും നിങ്ങൾ സ്വയം install ചെയ്യേണ്ട. Claude അത് ചെയ്യും.</p>
 
   <h2>തുടങ്ങുന്നതിന് മുൻപ്</h2>
   <ul>
     <li><b>Claude desktop app</b>, അതിനുള്ളിൽ <b>Claude Code</b> തുറന്നത്. Browser അല്ല, desktop app തന്നെ ഉപയോഗിക്കുക.</li>
     <li>Claude Code ഉൾപ്പെടുന്ന ഒരു Claude plan (paid plan വേണ്ടിവരാം).</li>
-    <li><b>Node.js 22 അല്ലെങ്കിൽ പുതിയത്</b>. HyperFrames-ന് ഇത് വേണം. ഇല്ലെങ്കിൽ step 2-ൽ Claude install ചെയ്തുതരും.</li>
-    <li>നിങ്ങൾക്ക് ഇഷ്ടമുള്ള editing style ഉള്ള <b>3 മുതൽ 5 വരെ Instagram videos-ന്റെ links</b> (step 3-ന്).</li>
-    <li><b>ഒരു raw video clip</b> (step 4-ന്).</li>
+    <li><b>Node.js 22 അല്ലെങ്കിൽ പുതിയത്</b>. HyperFrames-ന് ഇത് വേണം. ഇല്ലെങ്കിൽ step 3-ൽ Claude install ചെയ്തുതരും.</li>
+    <li>നിങ്ങൾക്ക് ഇഷ്ടമുള്ള editing style ഉള്ള <b>3 മുതൽ 5 വരെ Instagram videos-ന്റെ links</b> (step 4-ന്).</li>
+    <li>ഒരു <b>voiceover</b> (സ്വന്തം recording അല്ലെങ്കിൽ AI voice), നിങ്ങളുടെ <b>ഒരു photo</b> (step 5-ന്). Script text ഉണ്ടെങ്കിൽ അതും.</li>
   </ul>
 
   <div class="step">
-    <div class="top"><span class="num">1</span><h3>Workspace set up ചെയ്യുക</h3></div>
+    <div class="top"><span class="num">1</span><h3>Claude install ചെയ്ത് Claude Code open ചെയ്യുക</h3></div>
     <ol>
-      <li>Computer-ൽ <b>AI Video Editor</b> എന്ന പേരിൽ ഒരു folder ഉണ്ടാക്കുക.</li>
-      <li>അതിനുള്ളിൽ മൂന്ന് folders ഉണ്ടാക്കുക: <b>Raw Footage</b>, <b>References</b>, <b>Exports</b>. (Reel-ൽ ആദ്യത്തേതിനെ "Raw Files" എന്നാണ് പറഞ്ഞത്. ഏത് പേരും കൊടുക്കാം, prompt 3-ലും അതേ പേര് ഉപയോഗിച്ചാൽ മതി.)</li>
-      <li>Claude desktop app തുറന്ന് പുതിയ ഒരു <b>Claude Code</b> chat തുടങ്ങുക.</li>
-      <li><b>Local</b> select ചെയ്ത്, നമ്മൾ ഉണ്ടാക്കിയ <b>AI Video Editor</b> folder select ചെയ്യുക. ഇപ്പോൾ Claude-ന് നിങ്ങളുടെ files കാണാം.</li>
+      <li><a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a>-ൽ നിന്ന് <b>Claude desktop app</b> install ചെയ്ത് sign in ചെയ്യുക.</li>
+      <li><b>Code</b> tab തുറക്കുക. അതാണ് Claude Code.</li>
     </ol>
-    <div class="tree"><b>AI Video Editor</b>
-├─ Raw Footage   നിങ്ങളുടെ clips
-├─ References    style videos
-└─ Exports       final videos</div>
   </div>
 
   <div class="step">
-    <div class="top"><span class="num">2</span><h3>Tools install ചെയ്യുക (prompt 1)</h3></div>
+    <div class="top"><span class="num">2</span><h3>Workspace set up ചെയ്യുക</h3></div>
+    <ol>
+      <li>Computer-ൽ <b>AI Video Editor</b> എന്ന പേരിൽ ഒരു folder ഉണ്ടാക്കുക.</li>
+      <li>അതിനുള്ളിൽ മൂന്ന് folders ഉണ്ടാക്കുക: <b>Raw Footage</b>, <b>References</b>, <b>Exports</b>.</li>
+      <li>Claude Code-ൽ പുതിയ chat തുടങ്ങി <b>Local</b> select ചെയ്ത്, <b>AI Video Editor</b> folder തിരഞ്ഞെടുക്കുക. ഇപ്പോൾ Claude-ന് നിങ്ങളുടെ files കാണാം.</li>
+    </ol>
+    <div class="tree"><b>AI Video Editor</b>
+├─ Raw Footage   voice, photo, clips
+├─ References    style videos
+└─ Exports       finished videos</div>
+  </div>
+
+  <div class="step">
+    <div class="top"><span class="num">3</span><h3>Tools install ചെയ്യുക (ആദ്യത്തെ prompt)</h3></div>
     <p>ഇത് Claude Code-ൽ paste ചെയ്യുക. അഞ്ച് tools-ഉം Claude install ചെയ്ത് test ചെയ്യും. ഒരു command run ചെയ്യാൻ permission ചോദിച്ചാൽ, വായിച്ചുനോക്കി allow ചെയ്യുക. "ready" എന്ന് പറയുന്നതുവരെ കാത്തിരിക്കുക.</p>
     <div class="code"><pre>I want you to be my video editor. Install these tools on my computer and test each one:
 1. Remotion: github.com/remotion-dev/remotion
@@ -239,17 +289,17 @@ When everything works, tell me you are ready.</pre><button type="button">Copy</b
     <table class="score">
       <thead><tr><th>Tool</th><th>എന്ത് ചെയ്യും</th></tr></thead>
       <tbody>
-        <tr><td><b>Remotion</b></td><td>Code-ൽ നിന്ന് videos ഉണ്ടാക്കും: edits, motion graphics</td></tr>
-        <tr><td><b>HyperFrames</b></td><td>HTML-നെ MP4 ആക്കുന്ന HeyGen-ന്റെ open-source tool, AI agents-നുവേണ്ടി ഉണ്ടാക്കിയത്</td></tr>
-        <tr><td><b>FFmpeg</b></td><td>Video, audio cut ചെയ്യും, convert ചെയ്യും, export ചെയ്യും</td></tr>
-        <tr><td><b>Whisper</b></td><td>സംസാരം text ആക്കും, അതുവെച്ച് Claude captions ഉണ്ടാക്കും</td></tr>
+        <tr><td><b>Remotion</b></td><td>Code-ൽ നിന്ന് videos ഉണ്ടാക്കും: motion graphics, edits</td></tr>
+        <tr><td><b>HyperFrames</b></td><td>HTML-നെ MP4 ആക്കുന്ന HeyGen-ന്റെ open-source tool, motion graphics-നും</td></tr>
+        <tr><td><b>FFmpeg</b></td><td>Video, audio cut ചെയ്യും, mix ചെയ്യും, export ചെയ്യും</td></tr>
+        <tr><td><b>Whisper</b></td><td>സംസാരം സമയത്തോടെ text ആക്കും, അതുവെച്ച് Claude captions ഉണ്ടാക്കും</td></tr>
         <tr><td><b>yt-dlp</b></td><td>Reference videos download ചെയ്യും</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="step">
-    <div class="top"><span class="num">3</span><h3>നിങ്ങളുടെ style Claude-നെ പഠിപ്പിക്കുക (prompt 2)</h3></div>
+    <div class="top"><span class="num">4</span><h3>നിങ്ങളുടെ style പഠിപ്പിക്കുക (രണ്ടാമത്തെ prompt)</h3></div>
     <p>Claude-ന് edit ചെയ്യാൻ അറിയാം, പക്ഷേ നിങ്ങളുടെ taste അറിയില്ല. നിങ്ങൾക്ക് ഇഷ്ടമുള്ള editing ഉള്ള videos-ന്റെ links (3 മുതൽ 5 വരെ) മൂന്ന് placeholders-ന് പകരം കൊടുത്ത് prompt paste ചെയ്യുക. Claude നിങ്ങൾക്ക് review ചെയ്യാൻ ഒരു <b>brand sheet</b> ഉണ്ടാക്കും.</p>
     <div class="code"><pre>Learn the editing style from these videos:
 <span class="ph">[PASTE INSTAGRAM LINK 1]</span>
@@ -259,29 +309,60 @@ When everything works, tell me you are ready.</pre><button type="button">Copy</b
 2. Study what they have in common: fonts, colors, caption style, cuts, zooms, pacing, motion graphics, music, and sound.
 3. Build me a brand sheet that I can review. Make it inspired by these videos, not a copy of them.
 Once I approve it, follow it every time you edit for me.</pre><button type="button">Copy</button></div>
-    <div class="box"><b>ഏറ്റവും പ്രധാനപ്പെട്ട line</b>"Make it inspired by these videos, not a copy of them." Style copy ചെയ്യുകയല്ല, അതിൽ നിന്ന് inspired ആവുകയാണ് വേണ്ടത്. അതാണ് നിങ്ങളുടെ edit വ്യത്യസ്തമാക്കുന്നത്. Approve ചെയ്യുന്നതിന് മുൻപ് brand sheet വായിക്കുക.</div>
+    <div class="box"><b>ഏറ്റവും പ്രധാനപ്പെട്ട line</b>"Make it inspired by these videos, not a copy of them." Copy അല്ല, inspired. അതാണ് നിങ്ങളുടെ edit വ്യത്യസ്തമാക്കുന്നത്. Approve ചെയ്യുന്നതിന് മുൻപ് brand sheet വായിക്കുക.</div>
   </div>
 
   <div class="step">
-    <div class="top"><span class="num">4</span><h3>Shoot ചെയ്യുക, edit ചെയ്യിക്കുക (prompt 3)</h3></div>
-    <p>സാധാരണപോലെ video shoot ചെയ്ത് raw file <b>Raw Footage</b> folder-ൽ ഇടുക. ഈ prompt paste ചെയ്ത് <b>[FILE NAME]</b>-ന് പകരം നിങ്ങളുടെ file-ന്റെ പേര് കൊടുക്കുക.</p>
-    <div class="code"><pre>Edit my new video into an Instagram Reel:
+    <div class="top"><span class="num">5</span><h3>Voice + photo → Reel (മൂന്നാമത്തെ prompt)</h3></div>
+    <p>Camera വേണ്ട. നിങ്ങളുടെ <b>voice file</b>-ഉം <b>ഒരു photo</b>-യും Raw Footage folder-ൽ ഇടുക (script ഉണ്ടെങ്കിൽ .txt file ആയി അതും). ആദ്യം free <a href="#skills-ml">faceless-reel skill</a> ഒരിക്കൽ install ചെയ്യുക. എന്നിട്ട് ഈ prompt paste ചെയ്ത് file names-ഉം നിങ്ങളുടെ handle-ഉം കൊടുക്കുക.</p>
+    <div class="code"><pre>Make an Instagram Reel from my voiceover, using the faceless-reel skill:
+Voice: <span class="ph">[VOICE FILE]</span> in my Raw Footage folder
+Photo: <span class="ph">[PHOTO FILE]</span> in my Raw Footage folder
+Script: <span class="ph">[SCRIPT FILE, or delete this line]</span>
+1. Follow my approved brand sheet.
+2. Time every scene and caption to my voice.
+3. Show my photo as a small round badge with my handle <span class="ph">[@YOUR HANDLE]</span>.
+4. Add motion graphics, music, and sound effects.
+Show me a preview screenshot of every scene first. After I approve, export the final video to my Exports folder.</pre><button type="button">Copy</button></div>
+    <p>Claude ഓരോ scene-ഉം നിങ്ങളുടെ voice-ന് അനുസരിച്ച് time ചെയ്ത്, captions-ഉം motion graphics-ഉം music-ഉം ചേർത്ത്, ആദ്യം preview screenshots കാണിക്കും. Approve ചെയ്താൽ finished video <b>Exports</b>-ൽ വരും.</p>
+    <p>എന്തെങ്കിലും ശരിയല്ലെങ്കിൽ ഒരാളോട് പറയുന്നതുപോലെ സാധാരണ ഭാഷയിൽ പറഞ്ഞാൽ മതി: <i>"ഈ hook ഒന്ന് വലുതാക്കൂ"</i> അല്ലെങ്കിൽ <i>"background ഒന്ന് മാറ്റൂ"</i>. Claude അത് ശരിയാക്കും.</p>
+    <details class="alt">
+      <summary>Camera-യിൽ shoot ചെയ്ത video ആണോ? ഈ prompt ഉപയോഗിക്കൂ</summary>
+      <p>Raw video Raw Footage-ൽ ഇട്ട് <b>[FILE NAME]</b>-ന് പകരം file-ന്റെ പേര് കൊടുക്കുക.</p>
+      <div class="code"><pre>Edit my new video into an Instagram Reel:
 <span class="ph">[FILE NAME]</span> in my Raw Footage folder
 1. Remove every pause longer than 0.1 seconds.
 2. Follow my approved brand sheet.
 3. Add captions, music, and motion graphics.
 4. Use anything useful from my References folder.
 Show me a storyboard to review first. After I approve it, export the final video to my Exports folder.</pre><button type="button">Copy</button></div>
-    <p>Claude dead air cut ചെയ്ത്, captions-ഉം music-ഉം add ചെയ്ത്, ആദ്യം ഒരു storyboard കാണിക്കും. അത് approve ചെയ്താൽ finished video <b>Exports</b>-ൽ വരും.</p>
-    <p>എന്തെങ്കിലും ശരിയല്ലെങ്കിൽ ഒരാളോട് പറയുന്നതുപോലെ സാധാരണ ഭാഷയിൽ Claude-നോട് പറഞ്ഞാൽ മതി: <i>"ഈ hook ഒന്ന് വലുതാക്കൂ"</i> അല്ലെങ്കിൽ <i>"background ഒന്ന് മാറ്റൂ"</i>. Claude അത് ശരിയാക്കും.</p>
+    </details>
   </div>
+
+  <h2 id="skills-ml">Free skills</h2>
+  <p>ഒരു പ്രത്യേക ജോലി ചെയ്യുമ്പോഴെല്ലാം Claude follow ചെയ്യുന്ന instructions ആണ് skill. എന്റെ reels-ന് പിന്നിലുള്ള രണ്ട് skills ഇതാ, ആർക്കും ഉപയോഗിക്കാവുന്ന രീതിയിൽ.</p>
+  <div class="skills">
+    <div class="skill">
+      <b>faceless-reel</b>
+      <p>നിങ്ങളുടെ voice-ഉം photo-യും നിങ്ങളുടെ brand style-ൽ finished Reel ആക്കും: voice-ന് അനുസരിച്ച് scenes, word-by-word captions, photo badge, motion graphics, music, sound effects. Render ചെയ്യുന്നതിന് മുൻപ് screenshots കാണിക്കും.</p>
+      <a class="dl" href="/assets/faceless-reel-skill.zip" download>faceless-reel download ചെയ്യൂ</a>
+    </div>
+    <div class="skill">
+      <b>reel-post-kit</b>
+      <p>Finished Reel post ചെയ്യാൻ റെഡിയാക്കും: നിങ്ങളുടെ style-ൽ cover thumbnail, 3 caption options, comment-keyword auto-DM.</p>
+      <a class="dl" href="/assets/reel-post-kit-skill.zip" download>reel-post-kit download ചെയ്യൂ</a>
+    </div>
+  </div>
+  <p><b>Skill install ചെയ്യാൻ:</b> .zip download ചെയ്യുക. എന്നിട്ട് AI Video Editor folder open ആയ Claude Code-ൽ ഇത് paste ചെയ്ത് file name കൊടുക്കുക.</p>
+  <div class="code"><pre>Install the skill in <span class="ph">[ZIP FILE NAME]</span> from my Downloads folder into this project's .claude/skills folder, then tell me it's ready.</pre><button type="button">Copy</button></div>
+  <div class="box"><b>Install ചെയ്യുന്നതിന് മുൻപ് check ചെയ്യൂ</b>SKILL.md file തുറന്ന് വായിക്കുക, അല്ലെങ്കിൽ ആദ്യം scan ചെയ്യുക, എന്റേതാണെങ്കിൽ പോലും. <a href="/skillspector?lang=ml">Skill scan ചെയ്യുന്നത് എങ്ങനെ</a>.</div>
 
   <h2>കൂടുതൽ നല്ല result-ന്</h2>
   <ul>
     <li>ഒരേ style ഉള്ള 3 മുതൽ 5 വരെ reference videos തിരഞ്ഞെടുക്കുക.</li>
-    <li>Brand sheet-ഉം storyboard-ഉം approve ചെയ്യുന്നതിന് മുൻപ് review ചെയ്യുക.</li>
+    <li>Script text Claude-ന് കൊടുക്കുക. അപ്പോൾ captions-ൽ നിങ്ങളുടെ അതേ വാക്കുകളും spelling-ഉം വരും.</li>
+    <li>Brand sheet-ഉം preview screenshots-ഉം approve ചെയ്യുന്നതിന് മുൻപ് review ചെയ്യുക.</li>
     <li>ഒരു സമയം ഒരു മാറ്റം മാത്രം, സാധാരണ ഭാഷയിൽ ചോദിക്കുക.</li>
-    <li>Clips Raw Footage-ലും finished videos Exports-ലും വയ്ക്കുക. അപ്പോൾ എവിടെ നോക്കണമെന്ന് Claude-ന് എപ്പോഴും അറിയാം.</li>
     <li>ഉപയോഗിക്കാൻ അനുവാദമുള്ള music മാത്രം ഉപയോഗിക്കുക (royalty-free അല്ലെങ്കിൽ നിങ്ങളുടെ സ്വന്തം licence).</li>
   </ul>
 
@@ -291,6 +372,7 @@ Show me a storyboard to review first. After I approve it, export the final video
     <tbody>
       <tr><td>Claude-ന് files കാണാൻ പറ്റുന്നില്ല</td><td>പുതിയ Claude Code chat തുടങ്ങി <b>Local</b> select ചെയ്ത്, <b>AI Video Editor</b> folder തന്നെ select ചെയ്യുക (അതിനുള്ളിലെ folder അല്ല).</td></tr>
       <tr><td>ഒരു tool install ആകുന്നില്ല</td><td>Error അതേപടി chat-ൽ paste ചെയ്ത് "fix this" എന്ന് പറയുക. Node.js എന്ന് കണ്ടാൽ ആദ്യം Node.js 22 install ചെയ്യാൻ Claude-നോട് പറയുക.</td></tr>
+      <tr><td>Captions-ൽ spelling തെറ്റുന്നു</td><td>Script .txt file ആയി Raw Footage-ൽ ഇട്ട് മൂന്നാമത്തെ prompt-ൽ അതിന്റെ പേര് കൊടുക്കുക. മലയാളത്തിന് Whisper-ന്റെ large model ഉപയോഗിക്കാൻ Claude-നോട് പറയുക.</td></tr>
       <tr><td>Reference video download ആകുന്നില്ല</td><td>Link browser-ൽ തുറക്കുന്നുണ്ടോ എന്ന് നോക്കുക. Private accounts-ലെ videos download ചെയ്യാൻ പറ്റില്ല, public video എടുക്കുക.</td></tr>
       <tr><td>Edit നിങ്ങളുടെ style പോലെ തോന്നുന്നില്ല</td><td>Brand sheet-ൽ ഒരു കൃത്യമായ മാറ്റം വരുത്താൻ Claude-നോട് പറയുക, approve ചെയ്യുക, എന്നിട്ട് വീണ്ടും edit ചെയ്യിക്കുക.</td></tr>
     </tbody>
