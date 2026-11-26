@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Build Your Own AI Video Editor with Claude Code | Free Guide | Sabith</title>
-<meta name="description" content="Step-by-step guide in English and Malayalam: set up Claude Code with Remotion, HyperFrames, FFmpeg, Whisper and yt-dlp, then turn your voice and one photo into a finished Reel. 3 copy-paste prompts and 2 free skills.">
+<meta name="description" content="Step-by-step guide in English and Malayalam: set up Claude Code with Remotion, HyperFrames, FFmpeg, Whisper and yt-dlp, then turn your voice and one photo into a finished Reel. 3 copy-paste prompts.">
 <meta property="og:title" content="Build your own AI video editor with Claude Code (free guide)">
-<meta property="og:description" content="Voice + photo in, finished Reel out. 5 steps, 5 free tools, 3 copy-paste prompts, 2 free skills. English and Malayalam.">
+<meta property="og:description" content="Voice + photo in, finished Reel out. 5 steps, 5 free tools, 3 copy-paste prompts. English and Malayalam.">
 <meta property="og:image" content="/assets/og.jpg">
 <meta property="og:type" content="article">
 <meta name="twitter:card" content="summary_large_image">
@@ -54,11 +54,6 @@
   .alt{border:1px dashed var(--line);border-radius:14px;padding:12px 16px;margin:10px 0 14px}
   .alt summary{cursor:pointer;font-weight:700;color:var(--ink-2)}
   .alt[open] summary{margin-bottom:10px}
-  .skills{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin:14px 0 18px}
-  .skill{border:1px solid var(--line);border-radius:16px;padding:18px 18px 14px;background:#fff;display:flex;flex-direction:column}
-  .skill b{font:800 1.15rem ui-monospace,Menlo,Consolas,monospace;margin-bottom:6px}
-  .skill p{color:var(--ink-2);font-size:15.5px;flex:1}
-  .skill .dl{align-self:flex-start}
   [data-l]{display:none}
   html[lang="en"] [data-l="en"],html[lang="ml"] [data-l="ml"]{display:block}
 </style>
@@ -92,7 +87,7 @@
   <span class="tag">Free guide · EDIT</span>
   <h1>Build your own <span class="hl">AI video editor</span> with Claude Code</h1>
   <p class="sub">Voice + photo in. Finished Reel out.</p>
-  <p class="lead">I didn't edit my last reel, not a single second. I gave Claude Code one voice file and one photo, and it did the cuts, captions, motion graphics and music. Here is the whole setup: 5 steps, 5 free tools, 3 copy-paste prompts and 2 free skills. You don't install anything by hand. Claude does it for you.</p>
+  <p class="lead">I didn't edit my last reel, not a single second. I gave Claude Code one voice file and one photo, and it did the cuts, captions, motion graphics and music. Here is the whole setup: 5 steps, 5 free tools and 3 copy-paste prompts. You don't install anything by hand. Claude does it for you.</p>
 
   <h2>Before you start</h2>
   <ul>
@@ -162,8 +157,8 @@ Once I approve it, follow it every time you edit for me.</pre><button type="butt
 
   <div class="step">
     <div class="top"><span class="num">5</span><h3>Voice + photo → Reel (prompt 3)</h3></div>
-    <p>No camera needed. Put your <b>voice file</b> and <b>one photo</b> in the Raw Footage folder (add the script as a .txt file if you have it). Install the free <a href="#skills">faceless-reel skill</a> once, then paste this prompt and fill in the file names and your handle.</p>
-    <div class="code"><pre>Make an Instagram Reel from my voiceover, using the faceless-reel skill:
+    <p>No camera needed. Put your <b>voice file</b> and <b>one photo</b> in the Raw Footage folder (add the script as a .txt file if you have it). Then paste this prompt and fill in the file names and your handle.</p>
+    <div class="code"><pre>Make an Instagram Reel from my voiceover:
 Voice: <span class="ph">[VOICE FILE]</span> in my Raw Footage folder
 Photo: <span class="ph">[PHOTO FILE]</span> in my Raw Footage folder
 Script: <span class="ph">[SCRIPT FILE, or delete this line]</span>
@@ -186,24 +181,6 @@ Show me a preview screenshot of every scene first. After I approve, export the f
 Show me a storyboard to review first. After I approve it, export the final video to my Exports folder.</pre><button type="button">Copy</button></div>
     </details>
   </div>
-
-  <h2 id="skills">Free skills</h2>
-  <p>A skill is a set of instructions Claude follows every time it does a certain job. These two are the ones behind my reels, cleaned up so they work for anyone.</p>
-  <div class="skills">
-    <div class="skill">
-      <b>faceless-reel</b>
-      <p>Turns your voice + photo into a finished Reel in your brand style: scenes timed to your voice, word-by-word captions, your photo badge, motion graphics, music and sound effects. Shows you screenshots before it renders.</p>
-      <a class="dl" href="/assets/faceless-reel-skill.zip" download>Download faceless-reel</a>
-    </div>
-    <div class="skill">
-      <b>reel-post-kit</b>
-      <p>Gets a finished Reel ready to post: a cover thumbnail in your style, 3 caption options and the comment-keyword auto-DM.</p>
-      <a class="dl" href="/assets/reel-post-kit-skill.zip" download>Download reel-post-kit</a>
-    </div>
-  </div>
-  <p><b>Install a skill:</b> download the .zip, then paste this into Claude Code (with your AI Video Editor folder open) and fill in the file name.</p>
-  <div class="code"><pre>Install the skill in <span class="ph">[ZIP FILE NAME]</span> from my Downloads folder into this project's .claude/skills folder, then tell me it's ready.</pre><button type="button">Copy</button></div>
-  <div class="box"><b>Check before you install</b>Open the SKILL.md file and read it, or scan it first, even when it's from me. <a href="/skillspector">Here's how to scan a skill</a>.</div>
 
   <h2>Tips for better results</h2>
   <ul>
@@ -244,7 +221,7 @@ Show me a storyboard to review first. After I approve it, export the final video
   <span class="tag">Free guide · EDIT</span>
   <h1>Claude Code വെച്ച് സ്വന്തം <span class="hl">AI video editor</span> ഉണ്ടാക്കാം</h1>
   <p class="sub">Voice-ഉം photo-യും കൊടുത്താൽ finished Reel</p>
-  <p class="lead">എന്റെ കഴിഞ്ഞ reel ഞാൻ edit ചെയ്തതല്ല, ഒരു second പോലും. ഒരു voice file-ഉം ഒരു photo-യും Claude Code-ന് കൊടുത്തു. Cuts, captions, motion graphics, music, എല്ലാം Claude ചെയ്തു. മുഴുവൻ setup ഇതാ: 5 steps, 5 സൗജന്യ tools, copy-paste ചെയ്യാവുന്ന 3 prompts, 2 free skills. ഒന്നും നിങ്ങൾ സ്വയം install ചെയ്യേണ്ട. Claude അത് ചെയ്യും.</p>
+  <p class="lead">എന്റെ കഴിഞ്ഞ reel ഞാൻ edit ചെയ്തതല്ല, ഒരു second പോലും. ഒരു voice file-ഉം ഒരു photo-യും Claude Code-ന് കൊടുത്തു. Cuts, captions, motion graphics, music, എല്ലാം Claude ചെയ്തു. മുഴുവൻ setup ഇതാ: 5 steps, 5 സൗജന്യ tools, copy-paste ചെയ്യാവുന്ന 3 prompts. ഒന്നും നിങ്ങൾ സ്വയം install ചെയ്യേണ്ട. Claude അത് ചെയ്യും.</p>
 
   <h2>തുടങ്ങുന്നതിന് മുൻപ്</h2>
   <ul>
@@ -314,8 +291,8 @@ Once I approve it, follow it every time you edit for me.</pre><button type="butt
 
   <div class="step">
     <div class="top"><span class="num">5</span><h3>Voice + photo → Reel (മൂന്നാമത്തെ prompt)</h3></div>
-    <p>Camera വേണ്ട. നിങ്ങളുടെ <b>voice file</b>-ഉം <b>ഒരു photo</b>-യും Raw Footage folder-ൽ ഇടുക (script ഉണ്ടെങ്കിൽ .txt file ആയി അതും). ആദ്യം free <a href="#skills-ml">faceless-reel skill</a> ഒരിക്കൽ install ചെയ്യുക. എന്നിട്ട് ഈ prompt paste ചെയ്ത് file names-ഉം നിങ്ങളുടെ handle-ഉം കൊടുക്കുക.</p>
-    <div class="code"><pre>Make an Instagram Reel from my voiceover, using the faceless-reel skill:
+    <p>Camera വേണ്ട. നിങ്ങളുടെ <b>voice file</b>-ഉം <b>ഒരു photo</b>-യും Raw Footage folder-ൽ ഇടുക (script ഉണ്ടെങ്കിൽ .txt file ആയി അതും). എന്നിട്ട് ഈ prompt paste ചെയ്ത് file names-ഉം നിങ്ങളുടെ handle-ഉം കൊടുക്കുക.</p>
+    <div class="code"><pre>Make an Instagram Reel from my voiceover:
 Voice: <span class="ph">[VOICE FILE]</span> in my Raw Footage folder
 Photo: <span class="ph">[PHOTO FILE]</span> in my Raw Footage folder
 Script: <span class="ph">[SCRIPT FILE, or delete this line]</span>
@@ -338,24 +315,6 @@ Show me a preview screenshot of every scene first. After I approve, export the f
 Show me a storyboard to review first. After I approve it, export the final video to my Exports folder.</pre><button type="button">Copy</button></div>
     </details>
   </div>
-
-  <h2 id="skills-ml">Free skills</h2>
-  <p>ഒരു പ്രത്യേക ജോലി ചെയ്യുമ്പോഴെല്ലാം Claude follow ചെയ്യുന്ന instructions ആണ് skill. എന്റെ reels-ന് പിന്നിലുള്ള രണ്ട് skills ഇതാ, ആർക്കും ഉപയോഗിക്കാവുന്ന രീതിയിൽ.</p>
-  <div class="skills">
-    <div class="skill">
-      <b>faceless-reel</b>
-      <p>നിങ്ങളുടെ voice-ഉം photo-യും നിങ്ങളുടെ brand style-ൽ finished Reel ആക്കും: voice-ന് അനുസരിച്ച് scenes, word-by-word captions, photo badge, motion graphics, music, sound effects. Render ചെയ്യുന്നതിന് മുൻപ് screenshots കാണിക്കും.</p>
-      <a class="dl" href="/assets/faceless-reel-skill.zip" download>faceless-reel download ചെയ്യൂ</a>
-    </div>
-    <div class="skill">
-      <b>reel-post-kit</b>
-      <p>Finished Reel post ചെയ്യാൻ റെഡിയാക്കും: നിങ്ങളുടെ style-ൽ cover thumbnail, 3 caption options, comment-keyword auto-DM.</p>
-      <a class="dl" href="/assets/reel-post-kit-skill.zip" download>reel-post-kit download ചെയ്യൂ</a>
-    </div>
-  </div>
-  <p><b>Skill install ചെയ്യാൻ:</b> .zip download ചെയ്യുക. എന്നിട്ട് AI Video Editor folder open ആയ Claude Code-ൽ ഇത് paste ചെയ്ത് file name കൊടുക്കുക.</p>
-  <div class="code"><pre>Install the skill in <span class="ph">[ZIP FILE NAME]</span> from my Downloads folder into this project's .claude/skills folder, then tell me it's ready.</pre><button type="button">Copy</button></div>
-  <div class="box"><b>Install ചെയ്യുന്നതിന് മുൻപ് check ചെയ്യൂ</b>SKILL.md file തുറന്ന് വായിക്കുക, അല്ലെങ്കിൽ ആദ്യം scan ചെയ്യുക, എന്റേതാണെങ്കിൽ പോലും. <a href="/skillspector?lang=ml">Skill scan ചെയ്യുന്നത് എങ്ങനെ</a>.</div>
 
   <h2>കൂടുതൽ നല്ല result-ന്</h2>
   <ul>
